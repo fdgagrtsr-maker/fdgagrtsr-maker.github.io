@@ -1,0 +1,925 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>在线保全各项目资料速查手册</title>
+  <style>
+    :root {
+      --ink: #192230;
+      --muted: #66707e;
+      --paper: #fffdf7;
+      --paper-line: rgba(36, 79, 93, .085);
+      --cover: #2b3a67;
+      --cover-2: #8b3d4e;
+      --accent: #0f766e;
+      --gold: #c78b32;
+      --line: rgba(25, 34, 48, .13);
+      --panel: rgba(255,255,255,.8);
+      --shadow: rgba(28, 39, 58, .16);
+    }
+    * { box-sizing: border-box; }
+    html, body { width: 100%; max-width: 100%; overflow-x: hidden; }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.74), rgba(255,255,255,0) 34%),
+        linear-gradient(135deg, #e8edf3 0%, #f5eadf 52%, #d8dee9 100%);
+    }
+    button, input { font: inherit; }
+    .app { width: min(1160px, calc(100vw - 28px)); margin: 0 auto; padding: 22px 0 26px; }
+    .hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 420px); gap: 18px; align-items: end; margin-bottom: 16px; }
+    h1 { margin: 0 0 8px; font-size: clamp(22px, 3.2vw, 38px); line-height: 1.18; letter-spacing: 0; }
+    .subtitle { max-width: 680px; margin: 0; color: #51606b; font-size: 14px; line-height: 1.65; }
+    .search { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; padding: 7px; border: 1px solid rgba(43,58,103,.14); border-radius: 12px; background: rgba(255,255,255,.72); box-shadow: 0 14px 34px rgba(28,39,58,.1); backdrop-filter: blur(14px); }
+    .search input { min-width: 0; height: 44px; border: 1px solid rgba(43,58,103,.16); border-radius: 8px; padding: 0 12px; outline: 0; background: rgba(255,255,255,.96); }
+    .search input:focus { border-color: rgba(15,118,110,.62); box-shadow: 0 0 0 3px rgba(15,118,110,.13); }
+    .btn { min-height: 42px; border: 0; border-radius: 8px; padding: 0 15px; color: #fff; font-weight: 850; background: linear-gradient(135deg, var(--cover), var(--accent)); cursor: pointer; }
+    .workspace { display: grid; grid-template-columns: 278px minmax(0, 1fr); gap: 20px; align-items: stretch; }
+    .side { display: flex; flex-direction: column; min-height: 610px; max-height: calc(100vh - 150px); padding: 16px; border: 1px solid rgba(43,58,103,.12); border-radius: 12px; background: rgba(255,255,255,.74); box-shadow: 0 22px 48px rgba(28,39,58,.1); backdrop-filter: blur(14px); }
+    .side-title { display: flex; justify-content: space-between; gap: 10px; align-items: center; margin-bottom: 12px; }
+    .side-title h2 { margin: 0; font-size: 17px; line-height: 1.2; }
+    .counter { color: var(--muted); font-size: 13px; font-weight: 800; }
+    .toc { display: grid; gap: 9px; margin: 0; padding: 0 4px 0 0; overflow-y: auto; list-style: none; }
+    .toc button { width: 100%; border: 1px solid rgba(43,58,103,.08); border-left: 4px solid transparent; border-radius: 8px; padding: 10px 11px; color: var(--ink); text-align: left; background: rgba(255,255,255,.54); cursor: pointer; }
+    .toc button.active { border-color: rgba(15,118,110,.28); border-left-color: var(--accent); background: rgba(15,118,110,.08); }
+    .toc-category { display: block; margin-bottom: 4px; color: var(--accent); font-size: 12px; font-weight: 900; }
+    .toc-title { display: block; font-size: 14px; font-weight: 850; line-height: 1.35; }
+    .tip-note { margin-top: auto; padding-top: 16px; color: #5c6670; font-size: 12px; line-height: 1.6; }
+    .reader { position: relative; min-height: 610px; padding: 22px 22px 22px 34px; border: 1px solid rgba(43,58,103,.18); border-radius: 14px; background: linear-gradient(135deg, rgba(43,58,103,.16), rgba(255,255,255,.5) 42%, rgba(139,61,78,.14)); box-shadow: 0 30px 72px var(--shadow); overflow: hidden; }
+    .reader::before { content: ""; position: absolute; inset: 24px auto 24px 15px; width: 10px; border-radius: 999px; background: radial-gradient(circle, #fff 0 3px, rgba(43,58,103,.62) 4px 5px, transparent 6px) 0 0 / 10px 34px repeat-y; z-index: 3; }
+    .reader::after { content: ""; position: absolute; right: 22px; bottom: 12px; left: 42px; height: 11px; border-radius: 999px; background: linear-gradient(90deg, rgba(43,58,103,.18), rgba(199,139,50,.28), rgba(139,61,78,.18)); opacity: .9; }
+    .paper-stack { position: relative; min-height: 560px; height: 100%; margin-left: 14px; }
+    .paper-stack::before, .paper-stack::after { content: ""; position: absolute; inset: 12px 0 0 12px; border-radius: 12px; background: #dfe8ea; opacity: .72; }
+    .paper-stack::after { inset: 6px 0 0 6px; background: #f4efe8; opacity: .9; }
+    .page { position: relative; z-index: 2; min-height: 560px; padding: clamp(30px, 4vw, 46px) clamp(24px, 4vw, 42px) 86px; border-radius: 12px; background: linear-gradient(180deg, rgba(43,58,103,.11) 0 8px, transparent 8px), linear-gradient(90deg, rgba(15,118,110,.09), transparent 20%), repeating-linear-gradient(0deg, transparent 0 31px, var(--paper-line) 32px), var(--paper); box-shadow: inset 0 0 0 1px rgba(43,58,103,.14), 0 18px 36px rgba(28,39,58,.13); overflow: hidden; transition: opacity .18s ease, transform .18s ease; }
+    .page::before { content: ""; position: absolute; top: 0; right: 28px; width: 92px; height: 30px; border-radius: 0 0 8px 8px; background: linear-gradient(135deg, var(--cover), var(--cover-2)); box-shadow: 0 8px 18px rgba(28,39,58,.16); }
+    .page.is-leaving { opacity: .2; transform: translateX(-10px); }
+    .page.is-entering { animation: pageEnter .28s ease-out; }
+    @keyframes pageEnter { from { opacity: .18; transform: translateX(12px); } to { opacity: 1; transform: translateX(0); } }
+    .page-flash { position: absolute; inset: 22px 22px 22px 36px; z-index: 4; display: none; border-radius: 16px; background: linear-gradient(90deg, rgba(255,250,240,.98), rgba(255,250,240,.86)); box-shadow: 0 16px 32px rgba(24,32,38,.14); pointer-events: none; }
+    .page-flash.active.forward { display: block; animation: sheetForward .3s ease-out forwards; }
+    .page-flash.active.backward { display: block; animation: sheetBackward .3s ease-out forwards; }
+    @keyframes sheetForward { from { opacity: .95; transform: translateX(0) scale(1); } to { opacity: 0; transform: translateX(-34px) scale(.985); } }
+    @keyframes sheetBackward { from { opacity: .95; transform: translateX(0) scale(1); } to { opacity: 0; transform: translateX(34px) scale(.985); } }
+    .category { display: inline-flex; align-items: center; min-height: 28px; padding: 6px 11px; border-radius: 7px; color: #fff; font-size: 12px; font-weight: 900; background: linear-gradient(135deg, var(--accent), var(--cover)); }
+    .page h2 { margin: 16px 0 14px; font-size: clamp(24px, 3.4vw, 39px); line-height: 1.13; letter-spacing: 0; overflow-wrap: anywhere; }
+    .content { max-width: 790px; color: #38434d; font-size: 15px; line-height: 1.72; }
+    .content ul { display: grid; gap: 10px; margin: 0; padding-left: 20px; }
+    .content li { padding-left: 2px; }
+    .channel { display: inline-block; margin-right: 4px; color: var(--accent); font-weight: 950; }
+    mark { border-radius: 4px; padding: 1px 3px; color: inherit; background: rgba(199,139,50,.4); }
+    .reader-footer { position: absolute; right: clamp(30px, 4vw, 54px); bottom: 34px; left: clamp(44px, 5vw, 68px); z-index: 5; display: grid; grid-template-columns: auto 1fr auto; gap: 13px; align-items: center; color: #66717c; font-size: 13px; font-weight: 800; }
+    .progress { height: 8px; overflow: hidden; border-radius: 999px; background: rgba(43,58,103,.12); }
+    .progress span { display: block; width: var(--progress, 0%); height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--accent), var(--gold), var(--cover-2)); transition: width .24s ease; }
+    .reader-actions { display: flex; gap: 10px; }
+    .icon-btn { display: grid; place-items: center; width: 42px; height: 42px; border: 0; border-radius: 10px; color: #fff; font-size: 26px; line-height: 1; background: linear-gradient(135deg, var(--cover), var(--cover-2)); cursor: pointer; }
+    .icon-btn:disabled { opacity: .38; cursor: default; }
+    .status { min-height: 0; margin-top: 8px; color: #4f5b66; font-size: 13px; text-align: right; }
+    .internal-note { width: fit-content; margin: 16px auto 0; padding: 7px 13px; border: 1px solid rgba(21,66,61,.12); border-radius: 999px; color: rgba(31,42,51,.72); font-size: 12px; font-weight: 850; text-align: center; background: rgba(255,255,255,.56); }
+    .mobile-tools, .mobile-drawer { display: none; }
+    .drawer-backdrop { position: fixed; inset: 0; z-index: 30; display: none; background: rgba(18,28,34,.38); opacity: 0; transition: opacity .18s ease; }
+    .drawer-backdrop.open { display: block; opacity: 1; }
+    @media (max-width: 900px) {
+      .hero, .workspace { grid-template-columns: 1fr; }
+      .side { display: none; }
+      .app { width: min(100vw - 18px, 1160px); padding: 10px 0 18px; }
+      .hero { gap: 8px; margin-bottom: 10px; }
+      h1 { font-size: 18px; line-height: 1.22; margin-bottom: 6px; }
+      .subtitle { font-size: 12px; line-height: 1.45; }
+      .search { grid-template-columns: minmax(0, 1fr) 72px; gap: 6px; padding: 6px; border-radius: 10px; }
+      .search input, .search .btn { height: 36px; min-height: 36px; font-size: 13px; }
+      .search input { padding: 0 10px; }
+      .search .btn { padding: 0 10px; }
+      .mobile-tools { display: grid; grid-template-columns: auto 1fr auto; gap: 8px; align-items: center; margin: 0 0 10px; padding: 8px; border: 1px solid rgba(43,58,103,.12); border-radius: 10px; background: rgba(255,255,255,.7); box-shadow: 0 10px 24px rgba(28,39,58,.08); backdrop-filter: blur(10px); }
+      .mobile-tools button { height: 34px; min-height: 34px; padding: 0 12px; border: 0; border-radius: 8px; color: #fff; font-size: 13px; font-weight: 900; background: linear-gradient(135deg, var(--cover), var(--accent)); }
+      .mobile-page-meta { min-width: 0; color: #34424b; font-size: 13px; font-weight: 850; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: center; }
+      .mobile-category { justify-self: end; max-width: 86px; padding: 7px 9px; border: 1px solid rgba(139,61,78,.18); border-radius: 8px; color: var(--cover-2); font-size: 12px; font-weight: 900; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; background: rgba(139,61,78,.07); }
+      .reader { min-height: 0; padding: 12px 10px 18px 22px; border-radius: 13px; overflow: visible; box-shadow: 0 18px 42px rgba(28,39,58,.18); }
+      .reader::before { inset: 14px auto 18px 8px; width: 8px; background-size: 8px 30px; }
+      .reader::after { right: 12px; bottom: -7px; left: 24px; height: 12px; }
+      .paper-stack { min-height: 520px; margin-left: 0; }
+      .paper-stack::before { inset: 8px 0 0 7px; }
+      .paper-stack::after { inset: 4px 0 0 4px; }
+      .page { min-height: 520px; padding: 25px 19px 72px; border-radius: 11px; }
+      .page::before { right: 18px; width: 76px; height: 24px; border-radius: 0 0 7px 7px; }
+      .page h2 { margin-top: 15px; font-size: clamp(22px, 6.8vw, 30px); }
+      .content { font-size: 14px; line-height: 1.68; }
+      .content ul { gap: 8px; padding-left: 18px; }
+      .page-flash { inset: 12px 10px 18px 18px; border-radius: 14px; }
+      .reader-footer { right: 28px; bottom: 22px; left: 36px; grid-template-columns: 1fr auto; }
+      .reader-footer .progress { grid-column: 1 / -1; grid-row: 1; }
+      .reader-footer .page-label { grid-column: 1; grid-row: 2; }
+      .reader-actions { grid-column: 2; grid-row: 2; }
+      .icon-btn { width: 40px; height: 40px; font-size: 24px; }
+      .status { text-align: left; font-size: 13px; }
+      .internal-note { margin-top: 15px; padding: 7px 12px; font-size: 12px; }
+      .mobile-drawer { position: fixed; right: 0; bottom: 0; left: 0; z-index: 40; display: flex; flex-direction: column; max-height: 76vh; padding: 12px 12px calc(14px + env(safe-area-inset-bottom)); border-radius: 14px 14px 0 0; background: #fbfaf4; box-shadow: 0 -18px 44px rgba(28,39,58,.24); transform: translateY(104%); transition: transform .22s ease; }
+      .mobile-drawer.open { transform: translateY(0); }
+      .mobile-drawer-head { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: center; padding: 2px 2px 10px; }
+      .mobile-drawer-title { margin: 0; color: #1f2a33; font-size: 16px; font-weight: 950; }
+      .mobile-drawer-close { width: 36px; height: 36px; border: 0; border-radius: 9px; color: #fff; font-size: 24px; line-height: 1; background: linear-gradient(135deg, var(--cover), var(--cover-2)); }
+      .mobile-toc { display: grid; gap: 10px; margin: 0; padding: 0 2px 4px; overflow: auto; list-style: none; }
+      .mobile-toc-group { display: grid; gap: 6px; }
+      .mobile-toc-group-title { position: sticky; top: 0; z-index: 1; padding: 8px 2px 5px; color: var(--accent); font-size: 12px; font-weight: 950; background: #fbfaf4; }
+      .mobile-toc button { width: 100%; min-height: 42px; padding: 9px 10px; border: 1px solid rgba(43,58,103,.12); border-left: 4px solid transparent; border-radius: 8px; color: #26313a; font-size: 14px; font-weight: 850; line-height: 1.25; text-align: left; background: rgba(255,255,255,.76); }
+      .mobile-toc button.active { border-color: rgba(15,118,110,.32); border-left-color: var(--accent); color: var(--cover); background: rgba(15,118,110,.08); }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="hero" aria-label="知识小书工具栏">
+      <div>
+        <h1>在线保全各项目资料速查手册</h1>
+        <p class="subtitle">在线保全各保全项目收集的资料，以保全项目的具体 情形为准，一般涉及到的资料有：</p>
+      </div>
+      <form class="search" id="searchForm">
+        <input id="searchInput" type="search" placeholder="搜索：解约、微信保全、反洗钱资料..." autocomplete="off">
+        <button class="btn" type="submit">搜索</button>
+      </form>
+    </section>
+    <section class="mobile-tools" aria-label="手机目录工具栏">
+      <button id="mobileTocBtn" type="button">目录</button>
+      <span class="mobile-page-meta" id="mobilePageMeta"></span>
+      <span class="mobile-category" id="mobileCategory"></span>
+    </section>
+    <section class="workspace" aria-label="知识阅读器">
+      <aside class="side" aria-label="知识目录">
+        <div class="side-title"><h2>目录</h2><span class="counter" id="counter"></span></div>
+        <ol class="toc" id="toc"></ol>
+        <p class="tip-note">点击目录或搜索业务名称、材料名称，快速定位对应清单。</p>
+      </aside>
+      <div>
+        <article class="reader">
+          <div class="paper-stack">
+            <section class="page" id="page" aria-label="当前知识点">
+              <div class="category" id="pageTag"></div>
+              <h2 id="pageTitle"></h2>
+              <div class="content" id="pageContent"></div>
+            </section>
+          </div>
+          <div class="page-flash" id="pageFlash" aria-hidden="true"></div>
+          <footer class="reader-footer">
+            <span class="page-label" id="pageNumber"></span>
+            <div class="progress"><span id="progressBar"></span></div>
+            <div class="reader-actions">
+              <button class="icon-btn" id="prevBtn" type="button" aria-label="上一页">‹</button>
+              <button class="icon-btn" id="nextBtn" type="button" aria-label="下一页">›</button>
+            </div>
+          </footer>
+        </article>
+        <div class="status" id="resultText" aria-live="polite"></div>
+      </div>
+    </section>
+    <p class="internal-note">仅供内部学习使用</p>
+  </main>
+  <div class="drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
+  <section class="mobile-drawer" id="mobileDrawer" aria-label="手机目录" aria-hidden="true">
+    <div class="mobile-drawer-head">
+      <h2 class="mobile-drawer-title">目录</h2>
+      <button class="mobile-drawer-close" id="mobileDrawerClose" type="button" aria-label="关闭目录">×</button>
+    </div>
+    <div class="mobile-toc" id="mobileToc"></div>
+  </section>
+  <script>
+    const tips = [
+      {
+            "category": "信息变更",
+            "title": "客户地址信息变更",
+            "keywords": [
+                  "客户地址信息变更",
+                  "信息变更",
+                  "柜面保全",
+                  "微信保全",
+                  "身份证件",
+                  "人脸识别影像",
+                  "投保人身份证件",
+                  "投保人人脸识别影像",
+                  "批单",
+                  "申请人身份证件",
+                  "符合既有客户复查的情形时需要",
+                  "申请人人脸识别影像"
+            ],
+            "content": [
+                  "柜面保全：投保人身份证件、投保人人脸识别影像、批单。",
+                  "微信保全：申请人身份证件（符合既有客户复查的情形时需要）、申请人人脸识别影像。"
+            ]
+      },
+      {
+            "category": "信息变更",
+            "title": "客户重要资料变更",
+            "keywords": [
+                  "客户重要资料变更",
+                  "信息变更",
+                  "柜面保全",
+                  "微信保全",
+                  "身份证件",
+                  "人脸识别影像",
+                  "申请人身份证件",
+                  "申请人人脸识别影像",
+                  "财务资料",
+                  "其他证明文件",
+                  "反洗钱资料",
+                  "涉及反洗钱时需要",
+                  "批单",
+                  "被变更人身份证件"
+            ],
+            "content": [
+                  "柜面保全：申请人身份证件、申请人人脸识别影像、财务资料、其他证明文件、反洗钱资料（涉及反洗钱时需要）、批单。",
+                  "微信保全：申请人身份证件、申请人人脸识别影像、被变更人身份证件、其他证明文件、财务资料（新添加银行账户时需要）、签字、微信反洗钱资料（涉及反洗钱时需要）。"
+            ]
+      },
+      {
+            "category": "保单服务",
+            "title": "解约",
+            "keywords": [
+                  "解约",
+                  "保单服务",
+                  "柜面保全",
+                  "微信保全",
+                  "身份证件",
+                  "人脸识别影像",
+                  "投保人身份证件",
+                  "投保人人脸识别影像",
+                  "财务资料",
+                  "遗失声明书",
+                  "保险合同及现价表",
+                  "反洗钱资料",
+                  "涉及反洗钱时需要",
+                  "批单"
+            ],
+            "content": [
+                  "柜面保全：投保人身份证件、投保人人脸识别影像、财务资料、遗失声明书、保险合同及现价表、反洗钱资料（涉及反洗钱时需要）、批单。",
+                  "微信保全：投保人身份证件、投保人人脸识别影像、财务资料（新添加银行账户时需要）、签字、微信反洗钱资料（涉及反洗钱时需要）、退保劝阻（经代渠道保单需要）、风险提示函。"
+            ]
+      },
+      {
+            "category": "账户缴费",
+            "title": "收付费方式变更",
+            "keywords": [
+                  "收付费方式变更",
+                  "账户缴费",
+                  "柜面保全",
+                  "微信保全",
+                  "身份证件",
+                  "人脸识别影像",
+                  "投保人身份证件",
+                  "投保人人脸识别影像",
+                  "财务资料",
+                  "反洗钱资料",
+                  "涉及反洗钱时需要",
+                  "批单",
+                  "签字"
+            ],
+            "content": [
+                  "柜面保全：投保人身份证件、投保人人脸识别影像、财务资料、反洗钱资料（涉及反洗钱时需要）、批单。",
+                  "微信保全：投保人身份证件、投保人人脸识别影像、财务资料、签字、微信反洗钱资料（涉及反洗钱时需要）。"
+            ]
+      },
+      {
+            "category": "保单服务",
+            "title": "保单借款",
+            "keywords": [
+                  "保单借款",
+                  "保单服务",
+                  "柜面保全",
+                  "微信保全",
+                  "身份证件",
+                  "人脸识别影像",
+                  "投保人身份证件",
+                  "投保人人脸识别影像",
+                  "被保险人身份证件",
+                  "被保险人人脸识别影像",
+                  "申请书",
+                  "财务资料",
+                  "反洗钱资料",
+                  "涉及反洗钱时需要",
+                  "批单"
+            ],
+            "content": [
+                  "柜面保全：投保人身份证件、投保人人脸识别影像、被保险人身份证件、被保险人人脸识别影像、申请书、财务资料、反洗钱资料（涉及反洗钱时需要）、批单。",
+                  "微信保全：投保人身份证件、投保人人脸识别影像、被保险人身份证件、被保险人人脸识别影像、财务资料（新添加银行账户时需要）、签字、微信反洗钱资料（涉及反洗钱时需要）、风险提示函。"
+            ]
+      },
+      {
+            "category": "保单服务",
+            "title": "保单还款",
+            "keywords": [
+                  "保单还款",
+                  "保单服务",
+                  "柜面保全",
+                  "微信保全",
+                  "身份证件",
+                  "人脸识别影像",
+                  "投保人身份证件",
+                  "投保人人脸识别影像",
+                  "财务资料",
+                  "反洗钱资料",
+                  "涉及反洗钱时需要",
+                  "批单",
+                  "新添加银行账户时需要"
+            ],
+            "content": [
+                  "柜面保全：投保人身份证件、投保人人脸识别影像、财务资料、反洗钱资料（涉及反洗钱时需要）、批单。",
+                  "微信保全：投保人身份证件、投保人人脸识别影像、财务资料（新添加银行账户时需要）、签字、微信反洗钱资料（涉及反洗钱时需要）。"
+            ]
+      },
+      {
+            "category": "信息变更",
+            "title": "投保人变更",
+            "keywords": [
+                  "投保人变更",
+                  "信息变更",
+                  "柜面保全",
+                  "微信保全",
+                  "身份证件",
+                  "人脸识别影像",
+                  "原投保人身份证件",
+                  "原投保人人脸识别影像",
+                  "新投保人身份证件",
+                  "新投保人人脸识别影像",
+                  "被保险人身份证件",
+                  "被保险人人脸识别影像",
+                  "原投保人财务资料",
+                  "涉及补退费时需要",
+                  "新投保人财务资料",
+                  "签字",
+                  "微信反洗钱资料"
+            ],
+            "content": [
+                  "微信保全：原投保人身份证件、原投保人人脸识别影像、新投保人身份证件、新投保人人脸识别影像、被保险人身份证件、被保险人人脸识别影像、原投保人财务资料（涉及补退费时需要）、新投保人财务资料、签字、微信反洗钱资料（涉及反洗钱时需要）、《个人税收居民身份声明文件》、《健告声明书》、《投保人变更业务风险提示确认书》。"
+            ]
+      },
+      {
+            "category": "信息变更",
+            "title": "受益人变更",
+            "keywords": [
+                  "受益人变更",
+                  "信息变更",
+                  "柜面保全",
+                  "微信保全",
+                  "身份证件",
+                  "人脸识别影像",
+                  "被保险人身份证件",
+                  "被保险人人脸识别影像",
+                  "受益人身份证件",
+                  "反洗钱资料",
+                  "涉及反洗钱时需要",
+                  "批单",
+                  "申请人身份证件",
+                  "申请人人脸识别影像",
+                  "签字"
+            ],
+            "content": [
+                  "柜面保全：被保险人身份证件、被保险人人脸识别影像、受益人身份证件、反洗钱资料（涉及反洗钱时需要）、批单。",
+                  "微信保全：申请人身份证件、申请人人脸识别影像、受益人身份证件、签字、微信反洗钱资料（涉及反洗钱时需要）。"
+            ]
+      },
+      {
+            "category": "领取给付",
+            "title": "累计红利领取",
+            "keywords": [
+                  "累计红利领取",
+                  "领取给付",
+                  "柜面保全",
+                  "微信保全",
+                  "身份证件",
+                  "人脸识别影像",
+                  "投保人身份证件",
+                  "投保人人脸识别影像",
+                  "财务资料",
+                  "反洗钱资料",
+                  "涉及反洗钱时需要",
+                  "批单",
+                  "新添加银行账户时需要"
+            ],
+            "content": [
+                  "柜面保全：投保人身份证件、投保人人脸识别影像、财务资料、反洗钱资料（涉及反洗钱时需要）、批单。",
+                  "微信保全：投保人身份证件、投保人人脸识别影像、财务资料（新添加银行账户时需要）、签字、微信反洗钱资料（涉及反洗钱时需要）。"
+            ]
+      },
+      {
+            "category": "领取给付",
+            "title": "年金、满期金领取",
+            "keywords": [
+                  "年金、满期金领取",
+                  "领取给付",
+                  "柜面保全",
+                  "微信保全",
+                  "身份证件",
+                  "人脸识别影像",
+                  "受益人身份证件",
+                  "监护人身份证件",
+                  "监护人申请时需要",
+                  "受益人",
+                  "监护人",
+                  "被保人人脸识别影像",
+                  "财务资料",
+                  "监护关系证明",
+                  "被保人证明文件",
+                  "反洗钱资料"
+            ],
+            "content": [
+                  "柜面保全：受益人身份证件、监护人身份证件（监护人申请时需要）、受益人（监护人）人脸识别影像、被保人人脸识别影像、财务资料、监护关系证明、被保人证明文件、反洗钱资料（涉及反洗钱时需要）、批单。",
+                  "微信保全：受益人身份证件、受益人人脸识别影像、被保险人身份证件、被保险人人脸识别影像、被保险人生存证明、财务资料、签字、《个人税收居民身份声明文件》、微信反洗钱资料（涉及反洗钱时需要）。"
+            ]
+      },
+      {
+            "category": "领取给付",
+            "title": "满期领取",
+            "keywords": [
+                  "满期领取",
+                  "领取给付",
+                  "柜面保全",
+                  "微信保全",
+                  "身份证件",
+                  "人脸识别影像",
+                  "受益人身份证件",
+                  "受益人人脸识别影像",
+                  "满期保险金转保授权书",
+                  "财务资料",
+                  "反洗钱资料",
+                  "涉及反洗钱时需要",
+                  "批单",
+                  "遗失声明书",
+                  "保险合同及现价表",
+                  "满期受益人身份证件"
+            ],
+            "content": [
+                  "柜面保全：受益人身份证件、受益人人脸识别影像、满期保险金转保授权书、财务资料、反洗钱资料（涉及反洗钱时需要）、批单、遗失声明书、保险合同及现价表。",
+                  "微信保全：满期受益人身份证件、满期受益人人脸识别影像、被保险人身份证件、被保险人人脸识别影像、被保险人生存证明、财务资料、签字、《个人税收居民身份声明文件》、微信反洗钱资料（涉及反洗钱时需要）。"
+            ]
+      },
+      {
+            "category": "保单服务",
+            "title": "保单复效",
+            "keywords": [
+                  "保单复效",
+                  "保单服务",
+                  "柜面保全",
+                  "微信保全",
+                  "身份证件",
+                  "人脸识别影像",
+                  "投保人身份证件",
+                  "投保人人脸识别影像",
+                  "被保险人身份证件",
+                  "被保险人人脸识别影像",
+                  "签字",
+                  "财务资料",
+                  "新添加银行账户时需要",
+                  "健康声明书",
+                  "微信反洗钱资料",
+                  "涉及反洗钱时需要"
+            ],
+            "content": [
+                  "微信保全：投保人身份证件、投保人人脸识别影像、被保险人身份证件、被保险人人脸识别影像、签字、财务资料（新添加银行账户时需要）、《健康声明书》、微信反洗钱资料（涉及反洗钱时需要）。"
+            ]
+      },
+      {
+            "category": "保单服务",
+            "title": "保单补发",
+            "keywords": [
+                  "保单补发",
+                  "保单服务",
+                  "柜面保全",
+                  "微信保全",
+                  "身份证件",
+                  "人脸识别影像",
+                  "投保人身份证件",
+                  "投保人人脸识别影像",
+                  "财务资料",
+                  "反洗钱资料",
+                  "涉及反洗钱时需要",
+                  "批单",
+                  "新添加银行账户时需要"
+            ],
+            "content": [
+                  "柜面保全：投保人身份证件、投保人人脸识别影像、财务资料、反洗钱资料（涉及反洗钱时需要）、批单。",
+                  "微信保全：投保人身份证件、投保人人脸识别影像、财务资料（新添加银行账户时需要）、签字、微信反洗钱资料（涉及反洗钱时需要）。"
+            ]
+      },
+      {
+            "category": "领取给付",
+            "title": "万能险部分领取",
+            "keywords": [
+                  "万能险部分领取",
+                  "领取给付",
+                  "柜面保全",
+                  "微信保全",
+                  "身份证件",
+                  "人脸识别影像",
+                  "投保人身份证件",
+                  "投保人人脸识别影像",
+                  "财务资料",
+                  "反洗钱资料",
+                  "涉及反洗钱时需要",
+                  "批单",
+                  "新添加银行账户时需要"
+            ],
+            "content": [
+                  "柜面保全：投保人身份证件、投保人人脸识别影像、财务资料、反洗钱资料（涉及反洗钱时需要）、批单。",
+                  "微信保全：投保人身份证件、投保人人脸识别影像、财务资料（新添加银行账户时需要）、签字、微信反洗钱资料（涉及反洗钱时需要）、风险提示函。"
+            ]
+      },
+      {
+            "category": "领取给付",
+            "title": "生存金领取方式变更",
+            "keywords": [
+                  "生存金领取方式变更",
+                  "领取给付",
+                  "柜面保全",
+                  "微信保全",
+                  "身份证件",
+                  "人脸识别影像",
+                  "投保人身份证件",
+                  "投保人人脸识别影像",
+                  "批单"
+            ],
+            "content": [
+                  "柜面保全：投保人身份证件、投保人人脸识别影像、批单。",
+                  "微信保全：投保人人脸识别影像。"
+            ]
+      },
+      {
+            "category": "领取给付",
+            "title": "年金、满期金给付账号变更",
+            "keywords": [
+                  "年金、满期金给付账号变更",
+                  "领取给付",
+                  "柜面保全",
+                  "微信保全",
+                  "身份证件",
+                  "人脸识别影像",
+                  "受益人身份证件",
+                  "受益人人脸识别影像",
+                  "财务资料",
+                  "反洗钱资料",
+                  "涉及反洗钱时需要",
+                  "批单",
+                  "被保险人身份证件",
+                  "被保险人人脸识别影像"
+            ],
+            "content": [
+                  "柜面保全：受益人身份证件、受益人人脸识别影像、财务资料、反洗钱资料（涉及反洗钱时需要）、批单。",
+                  "微信保全：受益人身份证件、受益人人脸识别影像、被保险人身份证件、被保险人人脸识别影像、被保险人生存证明、财务资料、签字、微信反洗钱资料（涉及反洗钱时需要）。"
+            ]
+      },
+      {
+            "category": "保单服务",
+            "title": "不续保",
+            "keywords": [
+                  "不续保",
+                  "保单服务",
+                  "柜面保全",
+                  "微信保全",
+                  "身份证件",
+                  "人脸识别影像",
+                  "投保人身份证件",
+                  "投保人人脸识别影像",
+                  "反洗钱资料",
+                  "涉及反洗钱时需要",
+                  "批单",
+                  "签字"
+            ],
+            "content": [
+                  "柜面保全：投保人身份证件、投保人人脸识别影像、反洗钱资料（涉及反洗钱时需要）、批单。",
+                  "微信保全：投保人身份证件、投保人人脸识别影像、签字。"
+            ]
+      },
+      {
+            "category": "保障变更",
+            "title": "新增附约",
+            "keywords": [
+                  "新增附约",
+                  "保障变更",
+                  "柜面保全",
+                  "微信保全",
+                  "身份证件",
+                  "人脸识别影像",
+                  "投保人身份证件",
+                  "投保人人脸识别影像",
+                  "被保险人身份证件",
+                  "被保险人人脸识别影像",
+                  "签字",
+                  "财务资料",
+                  "新添加银行账户时需要",
+                  "健康声明书",
+                  "微信反洗钱资料",
+                  "涉及反洗钱时需要"
+            ],
+            "content": [
+                  "微信保全：投保人身份证件、投保人人脸识别影像、被保险人身份证件、被保险人人脸识别影像、签字、财务资料（新添加银行账户时需要）、《健康声明书》、微信反洗钱资料（涉及反洗钱时需要）。"
+            ]
+      },
+      {
+            "category": "账户缴费",
+            "title": "追加保费",
+            "keywords": [
+                  "追加保费",
+                  "账户缴费",
+                  "柜面保全",
+                  "微信保全",
+                  "身份证件",
+                  "人脸识别影像",
+                  "投保人身份证件",
+                  "投保人人脸识别影像",
+                  "财务资料",
+                  "反洗钱资料",
+                  "涉及反洗钱时需要",
+                  "批单",
+                  "新添加银行账户时需要"
+            ],
+            "content": [
+                  "柜面保全：投保人身份证件、投保人人脸识别影像、财务资料、反洗钱资料（涉及反洗钱时需要）、批单。",
+                  "微信保全：投保人身份证件、投保人人脸识别影像、财务资料（新添加银行账户时需要）、签字、微信反洗钱资料（涉及反洗钱时需要）。"
+            ]
+      },
+      {
+            "category": "保障变更",
+            "title": "加保",
+            "keywords": [
+                  "加保",
+                  "保障变更",
+                  "柜面保全",
+                  "微信保全",
+                  "身份证件",
+                  "人脸识别影像",
+                  "投保人身份证件",
+                  "投保人人脸识别影像",
+                  "被保险人身份证件",
+                  "被保险人人脸识别影像",
+                  "签字",
+                  "财务资料",
+                  "新添加银行账户时需要",
+                  "微信反洗钱资料",
+                  "涉及反洗钱时需要"
+            ],
+            "content": [
+                  "微信保全：投保人身份证件、投保人人脸识别影像、被保险人身份证件、被保险人人脸识别影像、签字、财务资料（新添加银行账户时需要）、微信反洗钱资料（涉及反洗钱时需要）。"
+            ]
+      },
+      {
+            "category": "保障变更",
+            "title": "增补告知",
+            "keywords": [
+                  "增补告知",
+                  "保障变更",
+                  "柜面保全",
+                  "微信保全",
+                  "身份证件",
+                  "人脸识别影像",
+                  "投保人身份证件",
+                  "投保人人脸识别影像",
+                  "签字",
+                  "病历"
+            ],
+            "content": [
+                  "微信保全：投保人身份证件、投保人人脸识别影像、签字、病历。"
+            ]
+      },
+      {
+            "category": "领取给付",
+            "title": "红利选择权变更",
+            "keywords": [
+                  "红利选择权变更",
+                  "领取给付",
+                  "柜面保全",
+                  "微信保全",
+                  "身份证件",
+                  "人脸识别影像",
+                  "投保人人脸识别影像"
+            ],
+            "content": [
+                  "微信保全：投保人人脸识别影像。"
+            ]
+      },
+      {
+            "category": "信息变更",
+            "title": "职业变更",
+            "keywords": [
+                  "职业变更",
+                  "信息变更",
+                  "柜面保全",
+                  "微信保全",
+                  "身份证件",
+                  "人脸识别影像",
+                  "投保人人脸识别影像"
+            ],
+            "content": [
+                  "微信保全：投保人人脸识别影像。"
+            ]
+      },
+      {
+            "category": "保单服务",
+            "title": "减保",
+            "keywords": [
+                  "减保",
+                  "保单服务",
+                  "柜面保全",
+                  "微信保全",
+                  "身份证件",
+                  "人脸识别影像",
+                  "投保人身份证件",
+                  "投保人人脸识别影像",
+                  "财务资料",
+                  "新添加银行账户时需要",
+                  "反洗钱资料",
+                  "涉及反洗钱时需要"
+            ],
+            "content": [
+                  "柜面保全：投保人身份证件、投保人人脸识别影像、财务资料（新添加银行账户时需要）、反洗钱资料（涉及反洗钱时需要）。",
+                  "微信保全：投保人身份证件、投保人人脸识别影像、财务资料（新添加银行账户时需要）、签字、微信反洗钱资料（涉及反洗钱时需要）。"
+            ]
+      },
+      {
+            "category": "账户缴费",
+            "title": "缴费方式变更",
+            "keywords": [
+                  "缴费方式变更",
+                  "账户缴费",
+                  "柜面保全",
+                  "微信保全",
+                  "身份证件",
+                  "人脸识别影像",
+                  "投保人身份证件",
+                  "投保人人脸识别影像",
+                  "财务资料",
+                  "反洗钱资料",
+                  "涉及反洗钱时需要",
+                  "批单"
+            ],
+            "content": [
+                  "柜面保全：投保人身份证件、投保人人脸识别影像、财务资料、反洗钱资料（涉及反洗钱时需要）、批单。"
+            ]
+      },
+      {
+            "category": "保障变更",
+            "title": "计划保障变更",
+            "keywords": [
+                  "计划保障变更",
+                  "保障变更",
+                  "柜面保全",
+                  "微信保全",
+                  "身份证件",
+                  "人脸识别影像",
+                  "投保人身份证件",
+                  "投保人人脸识别影像",
+                  "被保险人身份证件",
+                  "被保险人人脸识别影像",
+                  "签字",
+                  "财务资料",
+                  "新添加银行账户时需要",
+                  "健康声明书",
+                  "计划保障升高时需要"
+            ],
+            "content": [
+                  "微信保全：投保人身份证件、投保人人脸识别影像、被保险人身份证件、被保险人人脸识别影像、签字、财务资料（新添加银行账户时需要）、《健康声明书》（计划保障升高时需要）。"
+            ]
+      },
+      {
+            "category": "保单服务",
+            "title": "复缴",
+            "keywords": [
+                  "复缴",
+                  "保单服务",
+                  "柜面保全",
+                  "微信保全",
+                  "身份证件",
+                  "人脸识别影像",
+                  "投保人人脸识别影像"
+            ],
+            "content": [
+                  "微信保全：投保人人脸识别影像。"
+            ]
+      },
+      {
+            "category": "其他业务",
+            "title": "缓缴期解除",
+            "keywords": [
+                  "缓缴期解除",
+                  "其他业务",
+                  "柜面保全",
+                  "微信保全",
+                  "身份证件",
+                  "人脸识别影像",
+                  "投保人身份证件",
+                  "投保人人脸识别影像",
+                  "财务资料",
+                  "反洗钱资料",
+                  "涉及反洗钱时需要",
+                  "批单"
+            ],
+            "content": [
+                  "柜面保全：投保人身份证件、投保人人脸识别影像、财务资料、反洗钱资料（涉及反洗钱时需要）、批单。"
+            ]
+      },
+      {
+            "category": "保障变更",
+            "title": "险种转换",
+            "keywords": [
+                  "险种转换",
+                  "保障变更",
+                  "柜面保全",
+                  "微信保全",
+                  "身份证件",
+                  "人脸识别影像",
+                  "投保人身份证件",
+                  "投保人人脸识别影像",
+                  "人身保险投保提示及投保人声明书",
+                  "转保变更业务风险提示确认书",
+                  "反洗钱资料",
+                  "涉及反洗钱时需要",
+                  "批单"
+            ],
+            "content": [
+                  "柜面保全：投保人身份证件、投保人人脸识别影像、《人身保险投保提示及投保人声明书》、《转保变更业务风险提示确认书》、反洗钱资料（涉及反洗钱时需要）、批单。"
+            ]
+      }
+];
+    let currentPage = 0;
+    let lastQuery = "";
+    let isTurning = false;
+    const $ = selector => document.querySelector(selector);
+    const toc = $("#toc"), counter = $("#counter"), page = $("#page"), pageFlash = $("#pageFlash");
+    const pageTag = $("#pageTag"), pageTitle = $("#pageTitle"), pageContent = $("#pageContent");
+    const progressBar = $("#progressBar"), pageNumber = $("#pageNumber"), resultText = $("#resultText");
+    const searchForm = $("#searchForm"), searchInput = $("#searchInput"), prevBtn = $("#prevBtn"), nextBtn = $("#nextBtn");
+    const mobileTocBtn = $("#mobileTocBtn"), mobilePageMeta = $("#mobilePageMeta"), mobileCategory = $("#mobileCategory");
+    const mobileToc = $("#mobileToc"), mobileDrawer = $("#mobileDrawer"), mobileDrawerClose = $("#mobileDrawerClose"), drawerBackdrop = $("#drawerBackdrop");
+    function escapeHtml(value) { return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;"); }
+    function escapeRegExp(value) { return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+    function highlight(value, query) {
+      const safeValue = escapeHtml(value);
+      if (!query) return safeValue;
+      return safeValue.replace(new RegExp(`(${escapeRegExp(escapeHtml(query))})`, "gi"), "<mark>$1</mark>");
+    }
+    function renderToc() {
+      counter.textContent = `${tips.length} 页`;
+      toc.innerHTML = tips.map((tip, index) => `<li><button type="button" data-index="${index}"><span class="toc-category">${escapeHtml(tip.category)}</span><span class="toc-title">${escapeHtml(tip.title)}</span></button></li>`).join("");
+      const groups = tips.reduce((result, tip, index) => { if (!result.has(tip.category)) result.set(tip.category, []); result.get(tip.category).push({ tip, index }); return result; }, new Map());
+      mobileToc.innerHTML = [...groups.entries()].map(([category, items]) => `<div class="mobile-toc-group"><div class="mobile-toc-group-title">${escapeHtml(category)}</div>${items.map(({ tip, index }) => `<button type="button" data-index="${index}">${index + 1}. ${escapeHtml(tip.title)}</button>`).join("")}</div>`).join("");
+    }
+    function setButtons() {
+      prevBtn.disabled = currentPage === 0 || isTurning;
+      nextBtn.disabled = currentPage === tips.length - 1 || isTurning;
+      toc.querySelectorAll("button").forEach((button, index) => { button.classList.toggle("active", index === currentPage); button.disabled = isTurning; });
+      mobileToc.querySelectorAll("button").forEach(button => { button.classList.toggle("active", Number(button.dataset.index) === currentPage); button.disabled = isTurning; });
+    }
+    function formatItem(item, query) {
+      const match = String(item).match(/^(柜面保全|微信保全)：(.+)$/);
+      if (!match) return highlight(item, query);
+      return `<span class="channel">${highlight(match[1], query)}：</span>${highlight(match[2], query)}`;
+    }
+    function renderPage() {
+      const tip = tips[currentPage], query = lastQuery.trim();
+      pageTag.textContent = tip.category;
+      pageTitle.innerHTML = highlight(tip.title, query);
+      pageContent.innerHTML = `<ul>${tip.content.map(item => `<li>${formatItem(item, query)}</li>`).join("")}</ul>`;
+      progressBar.style.setProperty("--progress", `${((currentPage + 1) / tips.length) * 100}%`);
+      pageNumber.textContent = `${currentPage + 1} / ${tips.length}`;
+      mobilePageMeta.textContent = `${currentPage + 1} / ${tips.length}  ${tip.title}`;
+      mobileCategory.textContent = tip.category;
+      setButtons();
+    }
+    function openMobileDrawer() { mobileDrawer.classList.add("open"); drawerBackdrop.classList.add("open"); mobileDrawer.setAttribute("aria-hidden", "false"); }
+    function closeMobileDrawer() { mobileDrawer.classList.remove("open"); drawerBackdrop.classList.remove("open"); mobileDrawer.setAttribute("aria-hidden", "true"); }
+    function playTurn(toIndex, direction) {
+      isTurning = true; setButtons(); page.classList.add("is-leaving"); pageFlash.className = `page-flash active ${direction}`;
+      window.setTimeout(() => { currentPage = toIndex; renderPage(); page.classList.remove("is-leaving"); page.classList.add("is-entering"); }, 140);
+      window.setTimeout(() => { pageFlash.className = "page-flash"; page.classList.remove("is-entering"); isTurning = false; setButtons(); }, 330);
+    }
+    function goToPage(index, keepQuery = false) {
+      if (isTurning) return;
+      const nextIndex = Math.max(0, Math.min(index, tips.length - 1));
+      if (!keepQuery) lastQuery = "";
+      if (nextIndex === currentPage) { renderPage(); return; }
+      playTurn(nextIndex, nextIndex > currentPage ? "forward" : "backward");
+    }
+    function movePage(step) { resultText.textContent = ""; searchInput.value = ""; goToPage(currentPage + step); }
+    function searchTips(query) {
+      const normalized = query.trim().toLowerCase();
+      if (!normalized) { resultText.textContent = "请输入要搜索的知识点。"; return; }
+      const foundIndex = tips.findIndex(tip => [tip.category, tip.title, tip.keywords.join(" "), tip.content.join(" ")].join(" ").toLowerCase().includes(normalized));
+      if (foundIndex === -1) { resultText.textContent = `没有找到“${query}”。`; return; }
+      lastQuery = query.trim();
+      resultText.textContent = `已跳转到第 ${foundIndex + 1} 页：${tips[foundIndex].title}`;
+      goToPage(foundIndex, true);
+    }
+    toc.addEventListener("click", event => { const button = event.target.closest("button[data-index]"); if (!button) return; resultText.textContent = ""; searchInput.value = ""; goToPage(Number(button.dataset.index)); });
+    mobileToc.addEventListener("click", event => { const button = event.target.closest("button[data-index]"); if (!button) return; resultText.textContent = ""; searchInput.value = ""; closeMobileDrawer(); goToPage(Number(button.dataset.index)); });
+    searchForm.addEventListener("submit", event => { event.preventDefault(); searchTips(searchInput.value); });
+    prevBtn.addEventListener("click", () => movePage(-1));
+    nextBtn.addEventListener("click", () => movePage(1));
+    mobileTocBtn.addEventListener("click", openMobileDrawer);
+    mobileDrawerClose.addEventListener("click", closeMobileDrawer);
+    drawerBackdrop.addEventListener("click", closeMobileDrawer);
+    document.addEventListener("keydown", event => { if (event.target === searchInput) return; if (event.key === "Escape") closeMobileDrawer(); if (event.key === "ArrowLeft") movePage(-1); if (event.key === "ArrowRight") movePage(1); });
+    renderToc();
+    renderPage();
+  </script>
+</body>
+</html>
