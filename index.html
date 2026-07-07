@@ -44,6 +44,7 @@
     .side-title h2 { margin: 0; font-size: 17px; line-height: 1.2; }
     .counter { color: var(--muted); font-size: 13px; font-weight: 800; }
     .toc { display: grid; gap: 9px; margin: 0; padding: 0 4px 0 0; overflow-y: auto; list-style: none; }
+    .toc-group { display: grid; gap: 7px; }
     .toc button { width: 100%; border: 1px solid rgba(43,58,103,.08); border-left: 4px solid transparent; border-radius: 8px; padding: 10px 11px; color: var(--ink); text-align: left; background: rgba(255,255,255,.54); cursor: pointer; }
     .toc button.active { border-color: rgba(15,118,110,.28); border-left-color: var(--accent); background: rgba(15,118,110,.08); }
     .toc-category { display: block; margin-bottom: 4px; color: var(--accent); font-size: 12px; font-weight: 900; }
@@ -857,16 +858,36 @@
       if (!query) return safeValue;
       return safeValue.replace(new RegExp(`(${escapeRegExp(escapeHtml(query))})`, "gi"), "<mark>$1</mark>");
     }
+    function getTipChannels(tip) {
+      const joined = tip.content.join(" ");
+      return ["微信保全", "柜面保全"].filter(channel => joined.includes(`${channel}：`));
+    }
+    function getTocGroups() {
+      const groups = new Map([["微信保全", []], ["柜面保全", []]]);
+      tips.forEach((tip, index) => {
+        getTipChannels(tip).forEach(channel => groups.get(channel).push({ tip, index }));
+      });
+      return [...groups.entries()].filter(([, items]) => items.length);
+    }
     function renderToc() {
       counter.textContent = `${tips.length} 页`;
-      toc.innerHTML = tips.map((tip, index) => `<li><button type="button" data-index="${index}"><span class="toc-category">${escapeHtml(tip.category)}</span><span class="toc-title">${escapeHtml(tip.title)}</span></button></li>`).join("");
-      const groups = tips.reduce((result, tip, index) => { if (!result.has(tip.category)) result.set(tip.category, []); result.get(tip.category).push({ tip, index }); return result; }, new Map());
-      mobileToc.innerHTML = [...groups.entries()].map(([category, items]) => `<div class="mobile-toc-group"><div class="mobile-toc-group-title">${escapeHtml(category)}</div>${items.map(({ tip, index }) => `<button type="button" data-index="${index}">${index + 1}. ${escapeHtml(tip.title)}</button>`).join("")}</div>`).join("");
+      const groups = getTocGroups();
+      toc.innerHTML = groups.map(([channel, items]) => `
+        <li class="toc-group">
+          <div class="toc-category">${escapeHtml(channel)}</div>
+          ${items.map(({ tip, index }) => `
+            <button type="button" data-index="${index}">
+              <span class="toc-title">${index + 1}. ${escapeHtml(tip.title)}</span>
+            </button>
+          `).join("")}
+        </li>
+      `).join("");
+      mobileToc.innerHTML = groups.map(([channel, items]) => `<div class="mobile-toc-group"><div class="mobile-toc-group-title">${escapeHtml(channel)}</div>${items.map(({ tip, index }) => `<button type="button" data-index="${index}">${index + 1}. ${escapeHtml(tip.title)}</button>`).join("")}</div>`).join("");
     }
     function setButtons() {
       prevBtn.disabled = currentPage === 0 || isTurning;
       nextBtn.disabled = currentPage === tips.length - 1 || isTurning;
-      toc.querySelectorAll("button").forEach((button, index) => { button.classList.toggle("active", index === currentPage); button.disabled = isTurning; });
+      toc.querySelectorAll("button").forEach(button => { button.classList.toggle("active", Number(button.dataset.index) === currentPage); button.disabled = isTurning; });
       mobileToc.querySelectorAll("button").forEach(button => { button.classList.toggle("active", Number(button.dataset.index) === currentPage); button.disabled = isTurning; });
     }
     function formatItem(item, query) {
