@@ -1,0 +1,1812 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>纸质申请保全业务应备文件</title>
+  <style>
+    :root {
+      --ink: #1f2933;
+      --muted: #6b7280;
+      --panel: rgba(255, 255, 255, 0.78);
+      --paper: #fffaf0;
+      --paper-line: rgba(65, 52, 30, 0.07);
+      --cover: #123f3a;
+      --cover-2: #24665e;
+      --accent: #b96d38;
+      --gold: #d7a64a;
+      --line: rgba(31, 41, 51, 0.12);
+      --shadow: rgba(24, 32, 38, 0.18);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+      background:
+        radial-gradient(circle at 14% 10%, rgba(215, 166, 74, 0.18), transparent 26%),
+        radial-gradient(circle at 86% 8%, rgba(18, 63, 58, 0.18), transparent 30%),
+        linear-gradient(135deg, #eef4ef 0%, #e8dcc8 50%, #c99b84 100%);
+    }
+
+    button, input { font: inherit; }
+
+    .app {
+      width: min(1180px, calc(100vw - 32px));
+      margin: 0 auto;
+      padding: 28px 0 34px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(300px, 430px);
+      gap: 24px;
+      align-items: end;
+      margin-bottom: 22px;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--cover);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(27px, 4vw, 46px);
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      max-width: 650px;
+      margin: 0;
+      color: #52606d;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .internal-note {
+      width: fit-content;
+      margin: 16px auto 0;
+      padding: 8px 14px;
+      border: 1px solid rgba(18,63,58,.12);
+      border-radius: 999px;
+      color: rgba(31, 42, 51, .7);
+      font-size: 13px;
+      font-weight: 850;
+      text-align: center;
+      background: rgba(255,255,255,.56);
+    }
+
+    .search {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      padding: 8px;
+      border: 1px solid rgba(255,255,255,.78);
+      border-radius: 14px;
+      background: var(--panel);
+      box-shadow: 0 18px 44px rgba(43, 39, 31, .12);
+      backdrop-filter: blur(14px);
+    }
+
+    .search input {
+      min-width: 0;
+      height: 46px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 0 14px;
+      color: var(--ink);
+      background: rgba(255,255,255,.92);
+      outline: none;
+    }
+
+    .search input:focus {
+      border-color: rgba(18,63,58,.62);
+      box-shadow: 0 0 0 3px rgba(18,63,58,.13);
+    }
+
+    .btn {
+      min-height: 44px;
+      border: 0;
+      border-radius: 10px;
+      padding: 0 16px;
+      color: #fff;
+      font-weight: 850;
+      background: var(--cover);
+      cursor: pointer;
+      box-shadow: 0 12px 24px rgba(18,63,58,.2);
+      transition: transform .16s ease, opacity .16s ease, box-shadow .16s ease;
+    }
+
+    .btn:hover { transform: translateY(-1px); }
+    .btn:disabled { opacity: .42; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: 286px minmax(0, 1fr);
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .side {
+      display: flex;
+      flex-direction: column;
+      min-height: 600px;
+      max-height: calc(100vh - 170px);
+      padding: 18px;
+      border: 1px solid rgba(255,255,255,.7);
+      border-radius: 16px;
+      background: var(--panel);
+      box-shadow: 0 22px 50px rgba(43, 39, 31, .12);
+      backdrop-filter: blur(14px);
+    }
+
+    .side-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .side-title h2 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .counter {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .toc {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .toc button {
+      width: 100%;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      padding: 12px;
+      color: var(--ink);
+      text-align: left;
+      background: rgba(255,255,255,.48);
+      cursor: pointer;
+      transition: background .16s ease, border-color .16s ease, transform .16s ease;
+    }
+
+    .toc button:hover { transform: translateY(-1px); background: rgba(255,255,255,.76); }
+    .toc button.active { border-color: rgba(18,63,58,.28); background: rgba(18,63,58,.1); }
+
+    .toc-category {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--cover);
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .toc-title {
+      display: block;
+      font-size: 15px;
+      font-weight: 850;
+      line-height: 1.4;
+    }
+
+    .tip-note {
+      margin-top: auto;
+      padding-top: 18px;
+      color: #5c6670;
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .reader {
+      position: relative;
+      min-height: 600px;
+      padding: 20px;
+      border-radius: 20px;
+      background:
+        linear-gradient(135deg, #0f312e, var(--cover) 48%, var(--cover-2));
+      box-shadow: 0 30px 76px var(--shadow), inset 0 0 0 1px rgba(255,255,255,.16);
+      overflow: hidden;
+    }
+
+    .reader::before {
+      content: "";
+      position: absolute;
+      inset: 22px auto 22px 18px;
+      width: 9px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, rgba(255,255,255,.36), rgba(0,0,0,.26), rgba(255,255,255,.18));
+      z-index: 3;
+    }
+
+    .reader::after {
+      content: "";
+      position: absolute;
+      right: 18px;
+      bottom: 10px;
+      left: 36px;
+      height: 14px;
+      border-radius: 0 0 16px 16px;
+      background: repeating-linear-gradient(0deg, #d5bd83 0 1px, #f6e2af 1px 3px);
+      opacity: .9;
+    }
+
+    .paper-stack {
+      position: relative;
+      height: 100%;
+      min-height: 552px;
+      margin-left: 14px;
+    }
+
+    .paper-stack::before,
+    .paper-stack::after {
+      content: "";
+      position: absolute;
+      inset: 10px 0 0 10px;
+      border-radius: 16px;
+      background: #ead8b4;
+      opacity: .55;
+    }
+
+    .paper-stack::after {
+      inset: 5px 0 0 5px;
+      background: #f4e7c9;
+      opacity: .78;
+    }
+
+    .page {
+      position: relative;
+      z-index: 2;
+      min-height: 552px;
+      padding: clamp(28px, 4vw, 48px);
+      border-radius: 16px;
+      background:
+        linear-gradient(90deg, rgba(94, 58, 24, .11), transparent 16%),
+        repeating-linear-gradient(0deg, transparent 0 34px, var(--paper-line) 35px),
+        var(--paper);
+      box-shadow: inset 0 0 0 1px rgba(84,63,32,.14), 0 18px 36px rgba(24,32,38,.14);
+      overflow: hidden;
+      transition: opacity .18s ease, transform .18s ease;
+    }
+
+    .page.is-leaving { opacity: .18; transform: translateX(-10px); }
+    .page.is-entering { animation: pageEnter .28s ease-out; }
+
+    @keyframes pageEnter {
+      from { opacity: .18; transform: translateX(12px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .page-flash {
+      position: absolute;
+      inset: 22px 22px 22px 36px;
+      z-index: 4;
+      display: none;
+      border-radius: 16px;
+      background: linear-gradient(90deg, rgba(255,250,240,.98), rgba(255,250,240,.86));
+      box-shadow: 0 16px 32px rgba(24,32,38,.14);
+      pointer-events: none;
+    }
+
+    .page-flash.active.forward { display: block; animation: sheetForward .3s ease-out forwards; }
+    .page-flash.active.backward { display: block; animation: sheetBackward .3s ease-out forwards; }
+
+    @keyframes sheetForward {
+      0% { opacity: .95; transform: translateX(0) scale(1); }
+      100% { opacity: 0; transform: translateX(-34px) scale(.985); }
+    }
+
+    @keyframes sheetBackward {
+      0% { opacity: .95; transform: translateX(0) scale(1); }
+      100% { opacity: 0; transform: translateX(34px) scale(.985); }
+    }
+
+    .category {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--cover), #2d756b);
+    }
+
+    .page h2 {
+      max-width: 760px;
+      margin: 20px 0 16px;
+      font-size: clamp(30px, 4vw, 52px);
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .summary {
+      max-width: 700px;
+      margin: 0 0 22px;
+      color: #53606b;
+      font-size: 16px;
+      line-height: 1.75;
+    }
+
+    .content {
+      max-width: 760px;
+      color: #38424c;
+      font-size: 16px;
+      line-height: 1.86;
+    }
+
+    .content p { margin: 0 0 16px; }
+    .content ul { margin: 0; padding-left: 22px; }
+    .content li { margin: 8px 0; }
+    .download-note { color: var(--cover); font-weight: 950; }
+
+    .keywords {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 28px;
+    }
+
+    .keyword {
+      padding: 7px 10px;
+      border: 1px solid rgba(18,63,58,.2);
+      border-radius: 999px;
+      color: var(--cover);
+      font-size: 13px;
+      font-weight: 850;
+      background: rgba(18,63,58,.08);
+    }
+
+    .reader-footer {
+      position: absolute;
+      right: clamp(30px, 4vw, 54px);
+      bottom: 36px;
+      left: clamp(44px, 5vw, 68px);
+      z-index: 5;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 14px;
+      align-items: center;
+      color: #66717c;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .progress {
+      height: 8px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(18,63,58,.12);
+    }
+
+    .progress span {
+      display: block;
+      width: var(--progress, 0%);
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--cover), var(--gold));
+      transition: width .24s ease;
+    }
+
+    .reader-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .icon-btn {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      min-height: 44px;
+      border: 0;
+      border-radius: 999px;
+      color: #fff;
+      font-size: 28px;
+      line-height: 1;
+      background: rgba(18,63,58,.92);
+      cursor: pointer;
+    }
+
+    mark { border-radius: 4px; padding: 1px 3px; color: inherit; background: rgba(215,166,74,.45); }
+
+    .status {
+      min-height: 0;
+      margin-top: 0;
+      color: #4f5b66;
+      font-size: 14px;
+      text-align: right;
+    }
+
+    .status:not(:empty) {
+      min-height: 22px;
+      margin-top: 10px;
+    }
+
+    .mobile-tools,
+    .mobile-drawer {
+      display: none;
+    }
+
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      display: none;
+      background: rgba(18, 28, 34, .38);
+      opacity: 0;
+      transition: opacity .18s ease;
+    }
+
+    .drawer-backdrop.open {
+      display: block;
+      opacity: 1;
+    }
+
+    @media (max-width: 900px) {
+      .hero, .workspace { grid-template-columns: 1fr; }
+      .side { min-height: 0; }
+      .toc { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .reader { min-height: 590px; }
+      .paper-stack, .page { min-height: 546px; }
+    }
+
+    @media (max-width: 620px) {
+      html, body { overflow-x: hidden; }
+      body {
+        background:
+          linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,0) 36%),
+          linear-gradient(145deg, #e6eee9 0%, #e7d8c3 64%, #c99580 100%);
+      }
+
+      .app { width: min(100vw - 18px, 1180px); padding: 10px 0 18px; }
+      .hero { gap: 8px; margin-bottom: 10px; }
+      .eyebrow { font-size: 11px; margin-bottom: 6px; }
+      h1 { font-size: 18px; line-height: 1.22; margin-bottom: 6px; }
+      .subtitle { font-size: 12px; line-height: 1.45; }
+      .search { grid-template-columns: minmax(0, 1fr) 74px; gap: 6px; padding: 6px; border-radius: 10px; }
+      .search input, .search .btn { height: 36px; min-height: 36px; font-size: 13px; } .search input { padding: 0 10px; } .search .btn { padding: 0 10px; }
+
+      .mobile-tools {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        gap: 8px;
+        align-items: center;
+        margin: 0 0 10px;
+        padding: 8px;
+        border: 1px solid rgba(18,63,58,.12);
+        border-radius: 12px;
+        background: rgba(255,255,255,.66);
+        box-shadow: 0 10px 24px rgba(21,29,35,.08);
+        backdrop-filter: blur(10px);
+      }
+
+      .mobile-tools button {
+        height: 34px;
+        min-height: 34px;
+        padding: 0 12px;
+        border: 0;
+        border-radius: 999px;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 900;
+        background: var(--cover);
+      }
+
+      .mobile-page-meta {
+        min-width: 0;
+        color: #34424b;
+        font-size: 13px;
+        font-weight: 850;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        text-align: center;
+      }
+
+      .mobile-category {
+        justify-self: end;
+        max-width: 92px;
+        padding: 7px 9px;
+        border: 1px solid rgba(18,63,58,.16);
+        border-radius: 999px;
+        color: var(--cover);
+        font-size: 12px;
+        font-weight: 900;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        background: rgba(18,63,58,.07);
+      }
+
+      .side { display: none; }
+      .workspace { gap: 0; }
+      .reader {
+        min-height: 0;
+        padding: 12px 10px 18px 18px;
+        border-radius: 16px;
+        overflow: visible;
+        box-shadow: 0 18px 42px rgba(21,29,35,.22), inset 0 0 0 1px rgba(255,255,255,.18);
+      }
+
+      .reader::before { inset: 14px auto 18px 8px; width: 7px; }
+      .reader::after { right: 12px; bottom: -7px; left: 24px; height: 12px; }
+      .paper-stack { min-height: 500px; margin-left: 0; }
+      .paper-stack::before { inset: 8px 0 0 7px; }
+      .paper-stack::after { inset: 4px 0 0 4px; }
+      .page { min-height: 500px; padding: 24px 20px 72px; border-radius: 14px; }
+      .page h2 { margin-top: 16px; font-size: clamp(25px, 7.4vw, 33px); overflow-wrap: anywhere; }
+      .content { font-size: 15px; line-height: 1.82; }
+      .content ul { padding-left: 19px; }
+      .keywords { margin-top: 20px; }
+      .keyword { max-width: 100%; overflow-wrap: anywhere; }
+      .page-flash { inset: 12px 10px 18px 18px; border-radius: 14px; }
+      .reader-footer {
+        right: 28px;
+        bottom: 22px;
+        left: 36px;
+        grid-template-columns: 1fr auto;
+      }
+      .reader-footer .progress { grid-column: 1 / -1; grid-row: 1; }
+      .reader-footer .page-label { grid-column: 1; grid-row: 2; }
+      .reader-actions { grid-column: 2; grid-row: 2; }
+      .icon-btn { width: 40px; height: 40px; min-height: 40px; font-size: 24px; }
+      .status { text-align: left; font-size: 13px; }
+      .status:not(:empty) { margin-top: 8px; }
+      .internal-note { margin-top: 15px; padding: 7px 12px; font-size: 12px; }
+
+      .drawer-backdrop.open {
+        display: block;
+      }
+
+      .mobile-drawer {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 40;
+        display: flex;
+        flex-direction: column;
+        max-height: 76vh;
+        padding: 12px 12px calc(14px + env(safe-area-inset-bottom));
+        border-radius: 18px 18px 0 0;
+        background: #f9f4e7;
+        box-shadow: 0 -18px 44px rgba(18,28,34,.26);
+        transform: translateY(104%);
+        transition: transform .22s ease;
+      }
+
+      .mobile-drawer.open {
+        transform: translateY(0);
+      }
+
+      .mobile-drawer-head {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+        align-items: center;
+        padding: 2px 2px 10px;
+      }
+
+      .mobile-drawer-title {
+        margin: 0;
+        color: #1f2a33;
+        font-size: 16px;
+        font-weight: 950;
+      }
+
+      .mobile-drawer-close {
+        width: 36px;
+        height: 36px;
+        border: 0;
+        border-radius: 999px;
+        color: #fff;
+        font-size: 24px;
+        line-height: 1;
+        background: rgba(18,63,58,.92);
+      }
+
+      .mobile-toc {
+        display: grid;
+        gap: 10px;
+        margin: 0;
+        padding: 0 2px 4px;
+        overflow: auto;
+        list-style: none;
+      }
+
+      .mobile-toc-group {
+        display: grid;
+        gap: 6px;
+      }
+
+      .mobile-toc-group-title {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        padding: 8px 2px 5px;
+        color: var(--cover);
+        font-size: 12px;
+        font-weight: 950;
+        background: #f9f4e7;
+      }
+
+      .mobile-toc button {
+        width: 100%;
+        min-height: 42px;
+        padding: 9px 10px;
+        border: 1px solid rgba(18,63,58,.12);
+        border-radius: 10px;
+        color: #26313a;
+        font-size: 14px;
+        font-weight: 850;
+        line-height: 1.25;
+        text-align: left;
+        background: rgba(255,255,255,.72);
+      }
+
+      .mobile-toc button.active {
+        border-color: rgba(18,63,58,.36);
+        color: var(--cover);
+        background: rgba(18,63,58,.1);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="hero" aria-label="知识小书工具栏">
+      <div>
+        <h1>纸质申请保全业务应备文件</h1>
+        <p class="subtitle">纸质申请保全业务应备文件速查。可按业务名称、材料名称搜索，快速定位对应清单。</p>
+      </div>
+      <form class="search" id="searchForm">
+        <input id="searchInput" type="search" placeholder="搜索：投保人变更、身份证件、风险提示函..." autocomplete="off">
+        <button class="btn" type="submit">搜索</button>
+      </form>
+    </section>
+
+    <section class="mobile-tools" aria-label="手机目录工具栏">
+      <button id="mobileTocBtn" type="button">目录</button>
+      <span class="mobile-page-meta" id="mobilePageMeta"></span>
+      <span class="mobile-category" id="mobileCategory"></span>
+    </section>
+
+    <section class="workspace" aria-label="知识阅读器">
+      <aside class="side" aria-label="知识目录">
+        <div class="side-title">
+          <h2>目录</h2>
+          <span class="counter" id="counter"></span>
+        </div>
+        <ol class="toc" id="toc"></ol>
+        <p class="tip-note">点击目录或使用搜索快速定位业务。手机端建议直接搜索业务名称或材料名称。</p>
+      </aside>
+
+      <div>
+        <article class="reader">
+          <div class="paper-stack">
+            <section class="page" id="page" aria-label="当前知识点">
+              <div class="category" id="pageTag"></div>
+              <h2 id="pageTitle"></h2>
+              <div class="content" id="pageContent"></div>
+            </section>
+          </div>
+
+          <div class="page-flash" id="pageFlash" aria-hidden="true"></div>
+
+          <footer class="reader-footer">
+            <span class="page-label" id="pageNumber"></span>
+            <div class="progress"><span id="progressBar"></span></div>
+            <div class="reader-actions">
+              <button class="icon-btn" id="prevBtn" type="button" aria-label="上一页">‹</button>
+              <button class="icon-btn" id="nextBtn" type="button" aria-label="下一页">›</button>
+            </div>
+          </footer>
+        </article>
+        <div class="status" id="resultText" aria-live="polite"></div>
+      </div>
+    </section>
+    <p class="internal-note">仅供内部学习使用</p>
+  </main>
+
+  <div class="drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
+  <section class="mobile-drawer" id="mobileDrawer" aria-label="手机目录" aria-hidden="true">
+    <div class="mobile-drawer-head">
+      <h2 class="mobile-drawer-title">目录</h2>
+      <button class="mobile-drawer-close" id="mobileDrawerClose" type="button" aria-label="关闭目录">×</button>
+    </div>
+    <div class="mobile-toc" id="mobileToc"></div>
+  </section>
+
+  <script>
+    const tips = [
+      {
+            "category": "信息变更",
+            "title": "客户资料变更",
+            "keywords": [
+                  "客户资料变更",
+                  "信息变更",
+                  "保险合同变更申请书",
+                  "身份证件"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "投保人身份证件复印件；",
+                  "被保人身份证件复印件；（被保人申请时需要）",
+                  "证明变更原因的相关文件。"
+            ]
+      },
+      {
+            "category": "信息变更",
+            "title": "客户地址信息变更",
+            "keywords": [
+                  "客户地址信息变更",
+                  "信息变更",
+                  "保险合同变更申请书",
+                  "身份证件"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "投保人身份证件复印件；",
+                  "被保人身份证件复印件。（被保人申请时需要）"
+            ]
+      },
+      {
+            "category": "信息变更",
+            "title": "投保人变更",
+            "keywords": [
+                  "投保人变更",
+                  "信息变更",
+                  "保险合同变更申请书",
+                  "身份证件",
+                  "健康声明书",
+                  "税收居民身份声明文件"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "保单中含投保人保险费豁免保险的，需提供新投保人的健康声明书；",
+                  "新投保人及原投保人身份证件原件；",
+                  "投保人变更业务风险提示确认书；",
+                  "个人税收居民身份声明文件（变更投保人为自然人时需要）；",
+                  "机构税收居民身份声明文件（变更投保人为信托公司时需要）。"
+            ]
+      },
+      {
+            "category": "信息变更",
+            "title": "受益人变更",
+            "keywords": [
+                  "受益人变更",
+                  "信息变更",
+                  "保险合同变更申请书",
+                  "身份证件"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "被保人身份证件复印件（法定监护人申请时，需提供法定监护人身份证件复印件）；",
+                  "投保人身份证件复印件（投被保人共同申请时提供）；",
+                  "指定的受益人身份证件复印件。"
+            ]
+      },
+      {
+            "category": "信息变更",
+            "title": "收付费方式变更",
+            "keywords": [
+                  "收付费方式变更",
+                  "信息变更",
+                  "保险合同变更申请书",
+                  "身份证件"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "投保人身份证件复印件；",
+                  "以投保人为户名的银行卡或存折复印件。"
+            ]
+      },
+      {
+            "category": "信息变更",
+            "title": "第二投保人指定与撤销",
+            "keywords": [
+                  "第二投保人指定与撤销",
+                  "信息变更"
+            ],
+            "content": [
+                  "第二投保人指定与撤销申请书；",
+                  "投保人有效身份证明原件；",
+                  "被保险人有效身份证明原件；",
+                  "投保人配偶有效身份证明原件；",
+                  "投保人与其配偶的关系证明原件（无配偶需提供其他相关证明）；",
+                  "第二投保人有效身份证明原件 ；",
+                  "第二投保人与被保险人的关系证明原件。"
+            ]
+      },
+      {
+            "category": "信息变更",
+            "title": "职业变更",
+            "keywords": [
+                  "职业变更",
+                  "信息变更",
+                  "保险合同变更申请书",
+                  "身份证件"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "投保人身份证件复印件。"
+            ]
+      },
+      {
+            "category": "信息变更",
+            "title": "增补告知",
+            "keywords": [
+                  "增补告知",
+                  "信息变更",
+                  "保险合同变更申请书",
+                  "身份证件",
+                  "健康声明书"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "投保人身份证件复印件；",
+                  "健康声明书（投保时无健康告知的可不提供）。"
+            ]
+      },
+      {
+            "category": "信息变更",
+            "title": "补签名",
+            "keywords": [
+                  "补签名",
+                  "信息变更",
+                  "身份证件"
+            ],
+            "content": [
+                  "补签名声明；",
+                  "补签名人身份证件原件。"
+            ]
+      },
+      {
+            "category": "保单服务",
+            "title": "补发保单",
+            "keywords": [
+                  "补发保单",
+                  "保单服务",
+                  "保险合同变更申请书",
+                  "身份证件"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "投保人身份证件复印件。"
+            ]
+      },
+      {
+            "category": "保单服务",
+            "title": "保单借款",
+            "keywords": [
+                  "保单借款",
+                  "保单服务",
+                  "身份证件"
+            ],
+            "content": [
+                  "保险合同借款申请书；",
+                  "投保人身份证件原件；",
+                  "被保人身份证件原件。"
+            ]
+      },
+      {
+            "category": "保单服务",
+            "title": "保单还款",
+            "keywords": [
+                  "保单还款",
+                  "保单服务",
+                  "保险合同变更申请书",
+                  "身份证件",
+                  "风险提示函"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "投保人身份证件复印件；",
+                  "风险提示函（保单冻结状态需要）。"
+            ]
+      },
+      {
+            "category": "保单服务",
+            "title": "解除合同",
+            "keywords": [
+                  "解除合同",
+                  "保单服务",
+                  "身份证件"
+            ],
+            "content": [
+                  "保险合同（整单解约需要，自 2016 年 5 月 1 日营业税改增值税后，按照计划财务部的要求，犹豫期退保的保单需经计财部加盖“发票已作废或冲红”印章或字样后方可进行作业。）；",
+                  "解除合同申请书；",
+                  "投保人身份证件原件。"
+            ]
+      },
+      {
+            "category": "保单服务",
+            "title": "减保",
+            "keywords": [
+                  "减保",
+                  "保单服务",
+                  "保险合同变更申请书",
+                  "身份证件",
+                  "帐户变更申请书"
+            ],
+            "content": [
+                  "保险合同变更申请书（除投连、万能外的产品使用）；",
+                  "帐户变更申请书（投连、万能产品使用）",
+                  "投保人身份证件原件。"
+            ]
+      },
+      {
+            "category": "保单服务",
+            "title": "协议减保",
+            "keywords": [
+                  "协议减保",
+                  "保单服务",
+                  "保险合同变更申请书",
+                  "身份证件"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "投保人身份证件原件；",
+                  "同意操作协议减保、写明协议减保条件的《运营管理部特殊作业呈报》。"
+            ]
+      },
+      {
+            "category": "保单服务",
+            "title": "保单复效",
+            "keywords": [
+                  "保单复效",
+                  "保单服务",
+                  "保险合同变更申请书",
+                  "身份证件",
+                  "健康声明书",
+                  "风险提示函"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "被保险人健康声明书，保单中含投保人保险费豁免保险的还需投保人健康声明书；",
+                  "投保人身份证件复印件；",
+                  "风险提示函（保单冻结状态需要）。"
+            ]
+      },
+      {
+            "category": "保单服务",
+            "title": "新增附约",
+            "keywords": [
+                  "新增附约",
+                  "保单服务",
+                  "保险合同变更申请书",
+                  "身份证件",
+                  "健康声明书"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "被保险人健康声明书，保单中含投保人保险费豁免保险的还需有投保人健康声明书；",
+                  "投保提示；",
+                  "投保人身份证件复印件；",
+                  "产品说明书（公司官网披露了新增险种的《产品说明书》时需要提供，否则不需要提供）"
+            ]
+      },
+      {
+            "category": "保单服务",
+            "title": "加保",
+            "keywords": [
+                  "加保",
+                  "保单服务",
+                  "保险合同变更申请书",
+                  "身份证件",
+                  "健康声明书"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "投保人健康声明书（保单含投保人保险费豁免险种时需要）；",
+                  "被保人健康声明书（附约加保需要、BWLE 加保需要、万能险加保需要）；",
+                  "投保人身份证件复印件。"
+            ]
+      },
+      {
+            "category": "保单服务",
+            "title": "计划保障变更",
+            "keywords": [
+                  "计划保障变更",
+                  "保单服务",
+                  "保险合同变更申请书",
+                  "身份证件",
+                  "健康声明书"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "计划别升高需提供被保险人健康声明书，保单中含投保人保险费豁免保险的还需有投保人健康声明书；",
+                  "投保人身份证件复印件。"
+            ]
+      },
+      {
+            "category": "保单服务",
+            "title": "险种变更",
+            "keywords": [
+                  "险种变更",
+                  "保单服务",
+                  "保险合同变更申请书",
+                  "身份证件",
+                  "健康声明书"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "投保提示；",
+                  "投保人身份证件原件；",
+                  "保单中含投保人保险费豁免保险的，需提供投保人健康声明书；",
+                  "产品说明书（公司官网披露了变更险种的《产品说明书》时需要提供，否则不需要提供）；",
+                  "转保变更业务风险提示确认书。"
+            ]
+      },
+      {
+            "category": "保单服务",
+            "title": "险种转换",
+            "keywords": [
+                  "险种转换",
+                  "保单服务",
+                  "保险合同变更申请书",
+                  "身份证件"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "投保提示；",
+                  "投保人身份证件复印件；",
+                  "转保变更业务风险提示确认书。"
+            ]
+      },
+      {
+            "category": "给付领取",
+            "title": "累积红利领取",
+            "keywords": [
+                  "累积红利领取",
+                  "给付领取",
+                  "保险合同变更申请书",
+                  "身份证件"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "投保人身份证件复印件。"
+            ]
+      },
+      {
+            "category": "给付领取",
+            "title": "红利选择权变更",
+            "keywords": [
+                  "红利选择权变更",
+                  "给付领取",
+                  "保险合同变更申请书",
+                  "身份证件"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "投保人身份证件复印件。"
+            ]
+      },
+      {
+            "category": "给付领取",
+            "title": "年金、满期金给付",
+            "keywords": [
+                  "年金、满期金给付",
+                  "给付领取",
+                  "身份证件",
+                  "保险金转账给付授权书",
+                  "税收居民身份声明文件"
+            ],
+            "content": [
+                  "保险合同（满期金领取时需要）；",
+                  "保险金转账给付授权书；",
+                  "被保险人生存证明；",
+                  "受益人身份证件原件；",
+                  "受益人生存证明（未亲访办理时需要）；",
+                  "以受益人为户名的银行账户（受益人为未成年人，法定监护人申请时，也可提供以该法定监护人为户名的银行账户）；",
+                  "个人税收居民身份声明文件（受益人为自然人时需要）；",
+                  "机构税收居民身份声明文件（受益人为信托公司时需要）。"
+            ]
+      },
+      {
+            "category": "给付领取",
+            "title": "额外给付",
+            "keywords": [
+                  "额外给付",
+                  "给付领取",
+                  "身份证件"
+            ],
+            "content": [
+                  "特殊作业呈报；",
+                  "账户持有人身份证件复印件（额外给付账户与领取或解约退费账户不一致时需要）；",
+                  "账户复印件（额外给付账户与领取或解约退费账户不一致时需要）。"
+            ]
+      },
+      {
+            "category": "给付领取",
+            "title": "年金转换",
+            "keywords": [
+                  "年金转换",
+                  "给付领取",
+                  "身份证件"
+            ],
+            "content": [
+                  "年金转换申请书；",
+                  "投保人身份证件原件。"
+            ]
+      },
+      {
+            "category": "其他业务",
+            "title": "减额交清",
+            "keywords": [
+                  "减额交清",
+                  "其他业务",
+                  "保险合同变更申请书",
+                  "身份证件"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "投保人身份证件复印件。"
+            ]
+      },
+      {
+            "category": "账户缴费",
+            "title": "保单迁移",
+            "keywords": [
+                  "保单迁移",
+                  "账户缴费",
+                  "保险合同变更申请书",
+                  "身份证件"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "投保人身份证件原件。"
+            ]
+      },
+      {
+            "category": "账户缴费",
+            "title": "保费逾期未付选择权变更",
+            "keywords": [
+                  "保费逾期未付选择权变更",
+                  "账户缴费",
+                  "保险合同变更申请书",
+                  "身份证件"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "投保人身份证件复印件。"
+            ]
+      },
+      {
+            "category": "账户缴费",
+            "title": "不续保",
+            "keywords": [
+                  "不续保",
+                  "账户缴费",
+                  "保险合同变更申请书",
+                  "身份证件"
+            ],
+            "content": [
+                  "整单不续保：保险合同变更申请书、投保人身份证件原件；",
+                  "附约不续保：保险合同变更申请书、投保人身份证件复印件。"
+            ]
+      },
+      {
+            "category": "账户缴费",
+            "title": "缓缴期解除",
+            "keywords": [
+                  "缓缴期解除",
+                  "账户缴费",
+                  "保险合同变更申请书",
+                  "身份证件"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "投保人身份证件复印件。"
+            ]
+      },
+      {
+            "category": "保单服务",
+            "title": "追加保费",
+            "keywords": [
+                  "追加保费",
+                  "保单服务",
+                  "身份证件",
+                  "帐户变更申请书"
+            ],
+            "content": [
+                  "帐户变更申请书；",
+                  "投保人身份证件原件。"
+            ]
+      },
+      {
+            "category": "给付领取",
+            "title": "（投资连结保险）部分领取",
+            "keywords": [
+                  "（投资连结保险）部分领取",
+                  "给付领取",
+                  "身份证件",
+                  "帐户变更申请书"
+            ],
+            "content": [
+                  "帐户变更申请书；",
+                  "投保人身份证件原件。"
+            ]
+      },
+      {
+            "category": "账户缴费",
+            "title": "投资帐户比例分配",
+            "keywords": [
+                  "投资帐户比例分配",
+                  "账户缴费",
+                  "身份证件",
+                  "帐户变更申请书"
+            ],
+            "content": [
+                  "帐户变更申请书；",
+                  "投保人身份证件原件。"
+            ]
+      },
+      {
+            "category": "其他业务",
+            "title": "协议解约",
+            "keywords": [
+                  "协议解约",
+                  "其他业务",
+                  "身份证件"
+            ],
+            "content": [
+                  "保险合同（整单协议解约需要）；",
+                  "解除合同申请书；",
+                  "投保人身份证件原件；",
+                  "同意操作协议解约、写明协议解约条件的《运营管理部特殊作业呈报》。"
+            ]
+      },
+      {
+            "category": "其他业务",
+            "title": "复缴",
+            "keywords": [
+                  "复缴",
+                  "其他业务",
+                  "保险合同变更申请书",
+                  "身份证件"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "投保人身份证件复印件。"
+            ]
+      },
+      {
+            "category": "其他业务",
+            "title": "保单冻结与解除",
+            "keywords": [
+                  "保单冻结与解除",
+                  "其他业务"
+            ],
+            "content": [
+                  "《中荷人寿保单冻结与解除执行通知单》；",
+                  "人民法院执行裁定书；",
+                  "人民法院协助执行通知书；",
+                  "其他文件。"
+            ]
+      },
+      {
+            "category": "给付领取",
+            "title": "年金满期金给付账号变更",
+            "keywords": [
+                  "年金满期金给付账号变更",
+                  "给付领取",
+                  "身份证件",
+                  "保险金转账给付授权书"
+            ],
+            "content": [
+                  "保险金转账给付授权书；",
+                  "受益人身份证件原件；",
+                  "以受益人为户名的银行卡或存折（受益人为未成年人，法定监护人申请时，也可提供以该法定监护人为户名的银行账户）；"
+            ]
+      },
+      {
+            "category": "给付领取",
+            "title": "生存金领取方式变更",
+            "keywords": [
+                  "生存金领取方式变更",
+                  "给付领取",
+                  "保险合同变更申请书",
+                  "身份证件"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "投保人身份证件复印件。"
+            ]
+      },
+      {
+            "category": "给付领取",
+            "title": "年金领取频次变更",
+            "keywords": [
+                  "年金领取频次变更",
+                  "给付领取",
+                  "保险合同变更申请书",
+                  "身份证件"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "投保人身份证件复印件。"
+            ]
+      },
+      {
+            "category": "账户缴费",
+            "title": "缴费方式变更",
+            "keywords": [
+                  "缴费方式变更",
+                  "账户缴费",
+                  "保险合同变更申请书",
+                  "身份证件"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "投保人身份证件复印件。"
+            ]
+      },
+      {
+            "category": "账户缴费",
+            "title": "缴费年期变更",
+            "keywords": [
+                  "缴费年期变更",
+                  "账户缴费",
+                  "保险合同变更申请书",
+                  "身份证件"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "投保人身份证件复印件。"
+            ]
+      },
+      {
+            "category": "其他业务",
+            "title": "关联选择权（取消）",
+            "keywords": [
+                  "关联选择权（取消）",
+                  "其他业务",
+                  "保险合同变更申请书",
+                  "身份证件"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "投保人身份证件原件。"
+            ]
+      },
+      {
+            "category": "其他业务",
+            "title": "文字批注",
+            "keywords": [
+                  "文字批注",
+                  "其他业务",
+                  "保险合同变更申请书",
+                  "身份证件"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "投保人身份证件原件。"
+            ]
+      },
+      {
+            "category": "其他业务",
+            "title": "保单挂失",
+            "keywords": [
+                  "保单挂失",
+                  "其他业务",
+                  "保险合同变更申请书",
+                  "身份证件"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "投保人身份证件原件。"
+            ]
+      },
+      {
+            "category": "其他业务",
+            "title": "保单解挂",
+            "keywords": [
+                  "保单解挂",
+                  "其他业务",
+                  "保险合同变更申请书",
+                  "身份证件"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "投保人身份证件原件。"
+            ]
+      },
+      {
+            "category": "其他业务",
+            "title": "争议处理方式变更",
+            "keywords": [
+                  "争议处理方式变更",
+                  "其他业务",
+                  "保险合同变更申请书",
+                  "身份证件"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "投保人身份证件复印件。"
+            ]
+      },
+      {
+            "category": "账户缴费",
+            "title": "续期保费变更",
+            "keywords": [
+                  "续期保费变更",
+                  "账户缴费",
+                  "身份证件",
+                  "帐户变更申请书"
+            ],
+            "content": [
+                  "帐户变更申请书；",
+                  "投保人身份证件原件。"
+            ]
+      },
+      {
+            "category": "给付领取",
+            "title": "万能险部分领取",
+            "keywords": [
+                  "万能险部分领取",
+                  "给付领取",
+                  "身份证件",
+                  "帐户变更申请书"
+            ],
+            "content": [
+                  "帐户变更申请书；",
+                  "投保人身份证件原件。"
+            ]
+      },
+      {
+            "category": "保单服务",
+            "title": "投连万能复效",
+            "keywords": [
+                  "投连万能复效",
+                  "保单服务",
+                  "保险合同变更申请书",
+                  "身份证件",
+                  "健康声明书",
+                  "风险提示函"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "健康声明书；",
+                  "投保人身份证件复印件；",
+                  "风险提示函（保单冻结状态需要）。"
+            ]
+      },
+      {
+            "category": "账户缴费",
+            "title": "投资转换",
+            "keywords": [
+                  "投资转换",
+                  "账户缴费",
+                  "身份证件",
+                  "帐户变更申请书"
+            ],
+            "content": [
+                  "帐户变更申请书；",
+                  "投保人身份证件原件。"
+            ]
+      },
+      {
+            "category": "给付领取",
+            "title": "年金一次性领取",
+            "keywords": [
+                  "年金一次性领取",
+                  "给付领取",
+                  "身份证件",
+                  "保险金转账给付授权书",
+                  "税收居民身份声明文件"
+            ],
+            "content": [
+                  "保险合同；",
+                  "保险金转账给付授权书；",
+                  "年金保险金受益人或被保险人的法定继承人的身份证件原件，被保险人的法定继承人需提供可证明合法继承权和继承份额的相关证明文件；",
+                  "被保险人的死亡证明；",
+                  "以领取人为户名的银行账户原件；",
+                  "个人税收居民身份声明文件（受益人为自然人时需要）；",
+                  "机构税收居民身份声明文件（受益人为信托公司时需要）。"
+            ]
+      },
+      {
+            "category": "其他业务",
+            "title": "首期溢缴转下期选择权变更",
+            "keywords": [
+                  "首期溢缴转下期选择权变更",
+                  "其他业务",
+                  "保险合同变更申请书",
+                  "身份证件"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "投保人身份证件复印件。"
+            ]
+      },
+      {
+            "category": "给付领取",
+            "title": "领取信息变更",
+            "keywords": [
+                  "领取信息变更",
+                  "给付领取",
+                  "保险合同变更申请书",
+                  "身份证件"
+            ],
+            "content": [
+                  "保险合同变更申请书；",
+                  "投保人身份证件原件。"
+            ]
+      }
+];
+
+    let currentPage = 0;
+    let lastQuery = "";
+    let isTurning = false;
+    const commonRequiredItem = "个人业务保全服务个人信息授权书；";
+    const downloadNoteToken = "__DOWNLOAD_NOTE__";
+    const downloadableDocs = [
+      "个人业务保全服务个人信息授权书",
+      "保险金转账给付授权书",
+      "帐户变更申请书",
+      "授权委托书",
+      "保险合同解除申请书",
+      "保险合同借款申请书",
+      "补签名声明",
+      "健康声明书",
+      "投保人变更业务风险提示确认书"
+    ];
+
+    const $ = selector => document.querySelector(selector);
+    const toc = $("#toc");
+    const counter = $("#counter");
+    const page = $("#page");
+    const pageFlash = $("#pageFlash");
+    const pageTag = $("#pageTag");
+    const pageTitle = $("#pageTitle");    const pageContent = $("#pageContent");    const progressBar = $("#progressBar");
+    const pageNumber = $("#pageNumber");
+    const resultText = $("#resultText");
+    const searchForm = $("#searchForm");
+    const searchInput = $("#searchInput");
+    const prevBtn = $("#prevBtn");
+    const nextBtn = $("#nextBtn");
+    const mobileTocBtn = $("#mobileTocBtn");
+    const mobilePageMeta = $("#mobilePageMeta");
+    const mobileCategory = $("#mobileCategory");
+    const mobileToc = $("#mobileToc");
+    const mobileDrawer = $("#mobileDrawer");
+    const mobileDrawerClose = $("#mobileDrawerClose");
+    const drawerBackdrop = $("#drawerBackdrop");
+
+    function escapeHtml(value) {
+      return value
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function escapeRegExp(value) {
+      return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }
+
+    function highlight(value, query) {
+      const safeValue = escapeHtml(value);
+      if (!query) return safeValue;
+      const pattern = new RegExp(`(${escapeRegExp(escapeHtml(query))})`, "gi");
+      return safeValue.replace(pattern, "<mark>$1</mark>");
+    }
+
+    function formatContentItem(value, query) {
+      const docPattern = new RegExp(`(${downloadableDocs.map(escapeRegExp).join("|")})(?!（可官网下载）)`, "g");
+      const annotated = String(value).replace(docPattern, `$1${downloadNoteToken}`);
+      return highlight(annotated, query).replaceAll(downloadNoteToken, '<span class="download-note">（可官网下载）</span>');
+    }
+
+    function renderToc() {
+      counter.textContent = `${tips.length} 页`;
+      toc.innerHTML = tips.map((tip, index) => `
+        <li>
+          <button type="button" data-index="${index}">
+            <span class="toc-category">${escapeHtml(tip.category)}</span>
+            <span class="toc-title">${escapeHtml(tip.title)}</span>
+          </button>
+        </li>
+      `).join("");
+
+      toc.addEventListener("click", event => {
+        const button = event.target.closest("button[data-index]");
+        if (!button) return;
+        resultText.textContent = "";
+        searchInput.value = "";
+        goToPage(Number(button.dataset.index));
+      });
+
+      const groups = tips.reduce((result, tip, index) => {
+        if (!result.has(tip.category)) result.set(tip.category, []);
+        result.get(tip.category).push({ tip, index });
+        return result;
+      }, new Map());
+
+      mobileToc.innerHTML = [...groups.entries()].map(([category, items]) => `
+        <div class="mobile-toc-group">
+          <div class="mobile-toc-group-title">${escapeHtml(category)}</div>
+          ${items.map(({ tip, index }) => `
+            <button type="button" data-index="${index}">
+              ${index + 1}. ${escapeHtml(tip.title)}
+            </button>
+          `).join("")}
+        </div>
+      `).join("");
+
+      mobileToc.addEventListener("click", event => {
+        const button = event.target.closest("button[data-index]");
+        if (!button) return;
+        resultText.textContent = "";
+        searchInput.value = "";
+        closeMobileDrawer();
+        goToPage(Number(button.dataset.index));
+      });
+    }
+
+    function setButtons() {
+      prevBtn.disabled = currentPage === 0 || isTurning;
+      nextBtn.disabled = currentPage === tips.length - 1 || isTurning;
+      toc.querySelectorAll("button").forEach((button, index) => {
+        button.classList.toggle("active", index === currentPage);
+        button.disabled = isTurning;
+      });
+      mobileToc.querySelectorAll("button").forEach(button => {
+        button.classList.toggle("active", Number(button.dataset.index) === currentPage);
+        button.disabled = isTurning;
+      });
+    }
+
+    function renderPage() {
+      const tip = tips[currentPage];
+      const query = lastQuery.trim();
+      const progress = ((currentPage + 1) / tips.length) * 100;
+      const sourceItems = tip.content.filter(item => item !== commonRequiredItem);
+      const contentItems = [
+        sourceItems[0],
+        commonRequiredItem,
+        ...sourceItems.slice(1)
+      ].filter(Boolean);
+
+      pageTag.textContent = tip.category;
+      pageTitle.innerHTML = highlight(tip.title, query);      pageContent.innerHTML = `
+        <ul>${contentItems.map(item => `<li>${formatContentItem(item, query)}</li>`).join("")}</ul>
+      `;      progressBar.style.setProperty("--progress", `${progress}%`);
+      pageNumber.textContent = `${currentPage + 1} / ${tips.length}`;
+      mobilePageMeta.textContent = `${currentPage + 1} / ${tips.length}  ${tip.title}`;
+      mobileCategory.textContent = tip.category;
+      setButtons();
+    }
+
+    function openMobileDrawer() {
+      mobileDrawer.classList.add("open");
+      drawerBackdrop.classList.add("open");
+      mobileDrawer.setAttribute("aria-hidden", "false");
+    }
+
+    function closeMobileDrawer() {
+      mobileDrawer.classList.remove("open");
+      drawerBackdrop.classList.remove("open");
+      mobileDrawer.setAttribute("aria-hidden", "true");
+    }
+
+    function playTurn(fromIndex, toIndex, direction) {
+      isTurning = true;
+      setButtons();
+      page.classList.add("is-leaving");
+      pageFlash.className = `page-flash active ${direction}`;
+
+      window.setTimeout(() => {
+        currentPage = toIndex;
+        renderPage();
+        page.classList.remove("is-leaving");
+        page.classList.add("is-entering");
+      }, 140);
+
+      window.setTimeout(() => {
+        pageFlash.className = "page-flash";
+        page.classList.remove("is-entering");
+        isTurning = false;
+        setButtons();
+      }, 330);
+    }
+
+    function goToPage(index, keepQuery = false) {
+      if (isTurning) return;
+      const nextIndex = Math.max(0, Math.min(index, tips.length - 1));
+      if (nextIndex === currentPage) {
+        renderPage();
+        return;
+      }
+
+      const direction = nextIndex > currentPage ? "forward" : "backward";
+      if (!keepQuery) lastQuery = "";
+      playTurn(currentPage, nextIndex, direction);
+    }
+
+    function movePage(step) {
+      resultText.textContent = "";
+      searchInput.value = "";
+      goToPage(currentPage + step);
+    }
+
+    function searchTips(query) {
+      const normalized = query.trim().toLowerCase();
+      if (!normalized) {
+        resultText.textContent = "请输入要搜索的知识点。";
+        return;
+      }
+
+      const foundIndex = tips.findIndex(tip => [
+        tip.category,
+        tip.title,
+        tip.keywords.join(" "),
+        tip.content.join(" "),
+        commonRequiredItem
+      ].join(" ").toLowerCase().includes(normalized));
+
+      if (foundIndex === -1) {
+        resultText.textContent = `没有找到“${query}”。`;
+        return;
+      }
+
+      lastQuery = query.trim();
+      resultText.textContent = `已跳转到第 ${foundIndex + 1} 页：${tips[foundIndex].title}`;
+      goToPage(foundIndex, true);
+    }
+
+    searchForm.addEventListener("submit", event => {
+      event.preventDefault();
+      searchTips(searchInput.value);
+    });
+
+    prevBtn.addEventListener("click", () => movePage(-1));
+    nextBtn.addEventListener("click", () => movePage(1));
+    mobileTocBtn.addEventListener("click", openMobileDrawer);
+    mobileDrawerClose.addEventListener("click", closeMobileDrawer);
+    drawerBackdrop.addEventListener("click", closeMobileDrawer);
+
+    document.addEventListener("keydown", event => {
+      if (event.target === searchInput) return;
+      if (event.key === "Escape") closeMobileDrawer();
+      if (event.key === "ArrowLeft") movePage(-1);
+      if (event.key === "ArrowRight") movePage(1);
+    });
+
+    renderToc();
+    renderPage();
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
