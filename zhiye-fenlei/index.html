@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17364d">
+  <title>职业分类表 · 协会标准速查</title>
+  <style>
+    :root {
+      --navy: #17364d;
+      --navy-2: #28536b;
+      --teal: #16847f;
+      --teal-pale: #e8f5f2;
+      --gold: #e8b54a;
+      --red: #bd5d56;
+      --ink: #203342;
+      --muted: #667681;
+      --paper: #fffdf7;
+      --line: rgba(32, 51, 66, .13);
+      --panel: rgba(255, 255, 255, .78);
+      --shadow: rgba(23, 54, 77, .16);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { width: 100%; min-height: 100%; margin: 0; overflow-x: hidden; }
+    body {
+      color: var(--ink);
+      font-family: "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;
+      background:
+        radial-gradient(circle at 8% 5%, rgba(232, 181, 74, .22), transparent 24%),
+        radial-gradient(circle at 92% 8%, rgba(22, 132, 127, .18), transparent 29%),
+        linear-gradient(135deg, #e8eef0 0%, #f5ecdf 52%, #dbe5e4 100%);
+    }
+    button, input { font: inherit; }
+    button { -webkit-tap-highlight-color: transparent; }
+
+    .app { width: min(1380px, calc(100vw - 28px)); margin: 0 auto; padding: 20px 0 25px; }
+    .topbar { display: grid; grid-template-columns: minmax(0, 1fr) minmax(340px, 520px); gap: 22px; align-items: end; margin-bottom: 15px; }
+    .eyebrow { margin: 0 0 5px; color: var(--teal); font-size: 11px; font-weight: 950; letter-spacing: .13em; }
+    .title-row { display: flex; gap: 11px; align-items: center; margin-bottom: 6px; }
+    h1 { margin: 0; font-size: clamp(25px, 3.3vw, 40px); line-height: 1.12; letter-spacing: -.02em; }
+    .rules-btn { flex: none; min-height: 32px; border: 1px solid rgba(22,132,127,.22); border-radius: 9px; padding: 0 11px; color: var(--teal); font-size: 12px; font-weight: 900; background: rgba(255,255,255,.67); cursor: pointer; }
+    .rules-btn:hover { color: #fff; background: var(--teal); }
+    .subtitle { margin: 0; color: #566773; font-size: 13px; line-height: 1.55; }
+    .search-wrap { position: relative; }
+    .search { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; gap: 7px; align-items: center; padding: 7px 8px 7px 13px; border: 1px solid rgba(255,255,255,.8); border-radius: 14px; background: var(--panel); box-shadow: 0 16px 38px rgba(36,46,55,.12); backdrop-filter: blur(14px); }
+    .search-icon { color: var(--teal); font-size: 19px; font-weight: 900; }
+    .search input { min-width: 0; height: 42px; border: 0; padding: 0 4px; color: var(--ink); background: transparent; outline: 0; }
+    .search input::placeholder { color: #83909a; }
+    .clear-btn { min-width: 58px; height: 38px; border: 0; border-radius: 9px; color: #fff; font-size: 13px; font-weight: 900; background: linear-gradient(135deg, var(--navy), var(--teal)); cursor: pointer; }
+    .clear-btn:disabled { opacity: .42; cursor: default; }
+    .search-hint { margin: 6px 4px 0; color: var(--muted); font-size: 11px; text-align: right; }
+
+    .layout { display: grid; grid-template-columns: 224px minmax(0, 1fr); gap: 17px; align-items: stretch; }
+    .category-panel { display: flex; flex-direction: column; height: calc(100vh - 139px); min-height: 590px; padding: 15px; border: 1px solid rgba(255,255,255,.74); border-radius: 15px; background: var(--panel); box-shadow: 0 20px 48px rgba(36,46,55,.11); backdrop-filter: blur(14px); }
+    .panel-head { display: flex; justify-content: space-between; gap: 8px; align-items: center; margin-bottom: 11px; }
+    .panel-head h2 { margin: 0; font-size: 16px; }
+    .panel-head span { color: var(--muted); font-size: 11px; font-weight: 850; }
+    .category-list { display: grid; gap: 6px; margin: 0; padding: 0 3px 0 0; overflow-y: auto; list-style: none; }
+    .category-list button { display: grid; grid-template-columns: 29px minmax(0, 1fr) auto; gap: 7px; align-items: center; width: 100%; min-height: 40px; border: 1px solid transparent; border-left: 4px solid transparent; border-radius: 9px; padding: 7px 8px; color: var(--ink); text-align: left; background: rgba(255,255,255,.5); cursor: pointer; }
+    .category-list button:hover { background: rgba(255,255,255,.82); }
+    .category-list button.active { border-color: rgba(22,132,127,.24); border-left-color: var(--teal); background: rgba(22,132,127,.09); }
+    .cat-code { color: var(--teal); font-size: 11px; font-weight: 950; }
+    .cat-name { min-width: 0; font-size: 12px; font-weight: 850; line-height: 1.25; }
+    .cat-count { color: var(--muted); font-size: 10px; }
+
+    .book { position: relative; height: calc(100vh - 139px); min-height: 590px; padding: 17px 17px 17px 28px; border: 1px solid rgba(23,54,77,.15); border-radius: 17px; background: linear-gradient(135deg, rgba(23,54,77,.18), rgba(255,255,255,.52) 45%, rgba(22,132,127,.13)); box-shadow: 0 28px 68px var(--shadow); overflow: hidden; }
+    .book::before { content: ""; position: absolute; inset: 23px auto 23px 10px; width: 9px; z-index: 5; border-radius: 999px; background: radial-gradient(circle, #fff 0 3px, rgba(23,54,77,.65) 4px, transparent 5px) 0 0 / 9px 31px repeat-y; }
+    .paper-stack { position: relative; height: 100%; margin-left: 7px; }
+    .paper-stack::before, .paper-stack::after { content: ""; position: absolute; inset: 10px 0 0 10px; border-radius: 13px; background: #dce7e7; opacity: .74; }
+    .paper-stack::after { inset: 5px 0 0 5px; background: #f0ece4; opacity: .96; }
+    .paper { position: relative; z-index: 2; display: grid; grid-template-columns: minmax(250px, 330px) minmax(0, 1fr); gap: 0; height: 100%; border-radius: 13px; background: linear-gradient(180deg, rgba(23,54,77,.1) 0 7px, transparent 7px), repeating-linear-gradient(0deg, transparent 0 31px, rgba(32,51,66,.05) 32px), var(--paper); box-shadow: inset 0 0 0 1px rgba(23,54,77,.12), 0 16px 34px rgba(36,46,55,.13); overflow: hidden; }
+    .paper::before { content: ""; position: absolute; top: 0; right: 28px; width: 92px; height: 27px; z-index: 3; border-radius: 0 0 8px 8px; background: linear-gradient(135deg, var(--navy), var(--teal)); }
+
+    .results-panel { display: flex; flex-direction: column; min-width: 0; padding: 25px 12px 18px 21px; border-right: 1px solid var(--line); background: rgba(255,255,255,.36); }
+    .results-head { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; margin-bottom: 10px; padding-right: 4px; }
+    .results-kicker { display: block; margin-bottom: 3px; color: var(--teal); font-size: 10px; font-weight: 950; letter-spacing: .08em; }
+    .results-head h2 { margin: 0; font-size: 16px; line-height: 1.25; }
+    .result-count { flex: none; min-width: 44px; padding: 5px 8px; border-radius: 999px; color: var(--navy); font-size: 11px; font-weight: 950; text-align: center; background: rgba(232,181,74,.35); }
+    .result-list { display: grid; gap: 7px; margin: 0; padding: 0 4px 0 0; overflow-y: auto; list-style: none; }
+    .result-list button { display: block; width: 100%; border: 1px solid var(--line); border-left: 4px solid transparent; border-radius: 9px; padding: 9px 10px; color: var(--ink); text-align: left; background: rgba(255,255,255,.68); cursor: pointer; }
+    .result-list button:hover { background: #fff; }
+    .result-list button.active { border-color: rgba(22,132,127,.29); border-left-color: var(--teal); background: var(--teal-pale); }
+    .directory-back button { border-style: dashed; border-left-color: var(--gold); color: var(--navy); font-size: 11px; font-weight: 900; background: rgba(232,181,74,.11); }
+    .medium-count { flex: none; min-width: 36px; padding: 3px 7px; border-radius: 999px; color: var(--navy); font-size: 9px; font-weight: 950; text-align: center; background: rgba(232,181,74,.28); }
+    .result-meta { display: flex; justify-content: space-between; gap: 8px; align-items: center; margin-bottom: 4px; }
+    .result-code { display: block; color: var(--teal); font-size: 11px; font-weight: 950; letter-spacing: .04em; }
+    .result-large { min-width: 0; overflow: hidden; color: var(--muted); font-size: 9px; font-weight: 850; text-overflow: ellipsis; white-space: nowrap; }
+    .result-name { display: block; font-size: 12px; font-weight: 850; line-height: 1.38; overflow-wrap: anywhere; }
+    mark { border-radius: 3px; padding: 0 2px; color: inherit; background: rgba(232,181,74,.55); }
+    .empty { padding: 30px 10px; color: var(--muted); font-size: 13px; line-height: 1.7; text-align: center; }
+
+    .detail { min-width: 0; padding: clamp(37px, 5vw, 62px) clamp(25px, 4vw, 52px) 28px; overflow-y: auto; }
+    .detail.animate { animation: detailIn .2s ease-out; }
+    @keyframes detailIn { from { opacity: .2; transform: translateX(8px); } to { opacity: 1; transform: none; } }
+    .detail-top { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; margin-bottom: 21px; }
+    .tip-label { display: inline-flex; align-items: center; min-height: 27px; margin-bottom: 10px; padding: 5px 10px; border-radius: 7px; color: #fff; font-size: 11px; font-weight: 950; background: linear-gradient(135deg, var(--teal), var(--navy)); }
+    .detail h2 { max-width: 680px; margin: 0; font-size: clamp(23px, 3vw, 36px); line-height: 1.22; letter-spacing: -.015em; overflow-wrap: anywhere; }
+    .source-page { flex: none; margin-top: 4px; color: var(--muted); font-size: 10px; }
+    .identity-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .field { min-width: 0; padding: 13px 14px; border: 1px solid var(--line); border-radius: 11px; background: rgba(255,255,255,.7); }
+    .field.full { grid-column: 1 / -1; }
+    .field-label { display: block; margin-bottom: 5px; color: var(--muted); font-size: 10px; font-weight: 850; letter-spacing: .05em; }
+    .field-value { display: block; color: var(--navy); font-size: 14px; font-weight: 900; line-height: 1.5; overflow-wrap: anywhere; }
+    .field.code-field { background: rgba(232,181,74,.14); }
+    .field.code-field .field-value { color: var(--teal); font-size: 20px; letter-spacing: .08em; }
+    .ratings-title { margin: 22px 0 10px; color: var(--navy); font-size: 12px; font-weight: 950; }
+    .ratings { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 10px; }
+    .rating { min-width: 0; padding: 14px 10px; border: 1px solid var(--line); border-top: 5px solid var(--teal); border-radius: 11px; text-align: center; background: rgba(255,255,255,.78); }
+    .rating:nth-child(2) { border-top-color: var(--navy); }
+    .rating:nth-child(3) { border-top-color: var(--gold); }
+    .rating span { display: block; margin-bottom: 6px; color: var(--muted); font-size: 10px; font-weight: 850; }
+    .rating strong { display: block; color: var(--teal); font-size: clamp(15px, 2vw, 21px); line-height: 1.25; overflow-wrap: anywhere; }
+    .rating.reject strong { color: var(--red); }
+    .notice { margin-top: 18px; padding: 11px 13px; border-left: 4px solid var(--gold); border-radius: 8px; color: #536570; font-size: 11px; line-height: 1.65; background: rgba(232,181,74,.13); }
+    .detail-nav { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; margin-top: 14px; }
+    .detail-position { color: var(--muted); font-size: 10px; font-weight: 850; }
+    .page-step { min-height: 34px; border: 0; border-radius: 9px; padding: 0 13px; color: #fff; font-size: 11px; font-weight: 950; background: linear-gradient(135deg, var(--navy), var(--teal)); box-shadow: 0 8px 18px rgba(23,54,77,.15); cursor: pointer; }
+    .prev-page { justify-self: start; }
+    .next-page { justify-self: end; }
+    .page-step:disabled { color: var(--muted); background: rgba(23,54,77,.1); box-shadow: none; cursor: default; }
+    .detail-empty { display: grid; place-items: center; height: 100%; color: var(--muted); text-align: center; }
+    .detail-empty strong { display: block; margin-bottom: 7px; color: var(--navy); font-size: 20px; }
+    .mobile-bar, .drawer, .backdrop { display: none; }
+    .notes-backdrop { position: fixed; inset: 0; z-index: 70; display: none; place-items: center; padding: 18px; background: rgba(15,28,38,.52); backdrop-filter: blur(5px); }
+    .notes-backdrop.open { display: grid; }
+    .notes-modal { display: flex; flex-direction: column; width: min(760px, 100%); max-height: min(84vh, 760px); overflow: hidden; border: 1px solid rgba(255,255,255,.7); border-radius: 17px; background: #fbfaf4; box-shadow: 0 28px 80px rgba(15,28,38,.3); }
+    .notes-head { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; padding: 20px 22px 15px; border-bottom: 1px solid var(--line); background: linear-gradient(135deg, rgba(23,54,77,.08), rgba(22,132,127,.08)); }
+    .notes-eyebrow { display: block; margin-bottom: 4px; color: var(--teal); font-size: 10px; font-weight: 950; letter-spacing: .1em; }
+    .notes-head h2 { margin: 0; color: var(--navy); font-size: 22px; }
+    .notes-close { flex: none; width: 36px; height: 36px; border: 0; border-radius: 9px; color: #fff; font-size: 21px; line-height: 1; background: var(--navy); cursor: pointer; }
+    .notes-body { display: grid; gap: 16px; padding: 18px 22px 23px; overflow-y: auto; }
+    .rule-group-title { display: flex; align-items: center; gap: 8px; margin: 0 0 8px; color: var(--navy); font-size: 13px; font-weight: 950; }
+    .rule-group-title::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+    .rule-list { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+    .rule-item { display: grid; grid-template-columns: 28px minmax(0,1fr); gap: 10px; align-items: start; padding: 11px 12px; border: 1px solid var(--line); border-radius: 10px; color: #465966; font-size: 12px; line-height: 1.68; background: rgba(255,255,255,.76); }
+    .rule-no { display: grid; place-items: center; width: 27px; height: 27px; border-radius: 50%; color: #fff; font-size: 11px; font-weight: 950; background: var(--teal); }
+    .rule-item strong { color: var(--navy); }
+    .footnote { width: fit-content; margin: 13px auto 0; padding: 6px 12px; border: 1px solid rgba(23,54,77,.1); border-radius: 999px; color: rgba(32,51,66,.66); font-size: 11px; font-weight: 800; background: rgba(255,255,255,.53); }
+
+    @media (max-width: 1040px) {
+      .paper { grid-template-columns: minmax(230px, 285px) minmax(0,1fr); }
+      .detail { padding-right: 25px; padding-left: 25px; }
+      .identity-grid { grid-template-columns: 1fr; }
+      .field.full { grid-column: auto; }
+    }
+
+    @media (max-width: 760px) {
+      .app { width: min(100vw - 14px, 760px); padding: 9px 0 16px; }
+      .topbar { position: sticky; top: 0; z-index: 10; grid-template-columns: 1fr; gap: 8px; margin: 0 -2px 7px; padding: 5px 2px 8px; background: linear-gradient(180deg, #edf0eb 82%, rgba(237,240,235,0)); }
+      .eyebrow { margin-bottom: 3px; font-size: 9px; }
+      .title-row { justify-content: space-between; gap: 8px; margin-bottom: 3px; }
+      h1 { font-size: 21px; }
+      .rules-btn { min-height: 29px; padding: 0 9px; font-size: 11px; }
+      .subtitle { display: none; }
+      .search { padding: 5px 6px 5px 10px; border-radius: 11px; }
+      .search input { height: 37px; font-size: 13px; }
+      .clear-btn { min-width: 51px; height: 34px; }
+      .search-hint { display: none; }
+      .layout { display: block; }
+      .category-panel { display: none; }
+      .mobile-bar { display: grid; grid-template-columns: auto minmax(0,1fr) auto; gap: 7px; align-items: center; margin-bottom: 7px; padding: 7px; border: 1px solid rgba(255,255,255,.78); border-radius: 10px; background: var(--panel); box-shadow: 0 8px 20px rgba(36,46,55,.08); }
+      .mobile-bar button { height: 34px; border: 0; border-radius: 8px; padding: 0 11px; color: #fff; font-size: 12px; font-weight: 900; background: var(--navy); }
+      .mobile-current { min-width: 0; overflow: hidden; color: #435664; font-size: 11px; font-weight: 850; text-align: center; text-overflow: ellipsis; white-space: nowrap; }
+      .mobile-result-toggle { background: var(--teal) !important; }
+      .book { height: auto; min-height: 0; padding: 10px 8px 14px 17px; border-radius: 13px; overflow: visible; }
+      .book::before { inset: 14px auto 17px 5px; width: 7px; background-size: 7px 28px; }
+      .paper-stack { margin-left: 0; }
+      .paper-stack::before { inset: 7px 0 0 6px; }
+      .paper-stack::after { inset: 3px 0 0 3px; }
+      .paper { display: block; min-height: 520px; border-radius: 10px; }
+      .paper::before { right: 15px; width: 69px; height: 21px; }
+      .results-panel { height: min(38vh, 310px); padding: 21px 12px 12px 17px; border-right: 0; border-bottom: 1px solid var(--line); }
+      .book.results-collapsed .results-panel { display: none; }
+      .results-head { margin-bottom: 7px; }
+      .results-head h2 { font-size: 14px; }
+      .result-list { gap: 6px; }
+      .result-list button { padding: 8px 9px; }
+      .result-meta { margin-bottom: 3px; }
+      .result-code { font-size: 10px; }
+      .result-large { max-width: 64%; font-size: 9px; }
+      .result-name { display: block; font-size: 11px; }
+      .detail { min-height: 500px; padding: 31px 16px 23px; overflow: visible; }
+      .detail-top { margin-bottom: 14px; }
+      .tip-label { min-height: 24px; margin-bottom: 8px; font-size: 10px; }
+      .detail h2 { font-size: clamp(21px, 6.3vw, 27px); }
+      .source-page { display: none; }
+      .identity-grid { gap: 7px; }
+      .field { padding: 10px 11px; border-radius: 9px; }
+      .field-label { margin-bottom: 3px; font-size: 9px; }
+      .field-value { font-size: 12px; line-height: 1.42; }
+      .field.code-field .field-value { font-size: 17px; }
+      .ratings-title { margin: 15px 0 8px; }
+      .ratings { gap: 6px; }
+      .rating { padding: 10px 5px; border-top-width: 4px; border-radius: 9px; }
+      .rating span { margin-bottom: 5px; font-size: 9px; }
+      .rating strong { font-size: 13px; }
+      .notice { margin-top: 13px; padding: 9px 10px; font-size: 10px; }
+      .detail-nav { margin-top: 11px; }
+      .page-step { min-height: 32px; padding: 0 10px; }
+      .footnote { margin-top: 10px; font-size: 10px; }
+
+      .backdrop { position: fixed; inset: 0; z-index: 30; background: rgba(15,28,38,.43); opacity: 0; }
+      .backdrop.open { display: block; opacity: 1; }
+      .drawer { position: fixed; right: 0; bottom: 0; left: 0; z-index: 40; max-height: 78vh; padding: 13px 13px calc(15px + env(safe-area-inset-bottom)); border-radius: 15px 15px 0 0; background: #fbfaf4; box-shadow: 0 -18px 48px rgba(23,54,77,.25); transform: translateY(104%); transition: transform .2s ease; }
+      .drawer.open { display: block; transform: translateY(0); }
+      .drawer-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 9px; }
+      .drawer h2 { margin: 0; font-size: 16px; }
+      .drawer-close { width: 34px; height: 34px; border: 0; border-radius: 8px; color: #fff; font-size: 19px; background: var(--navy); }
+      .mobile-categories { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 7px; max-height: 63vh; overflow-y: auto; }
+      .mobile-categories button { display: grid; grid-template-columns: 25px minmax(0,1fr) auto; gap: 5px; align-items: center; min-height: 43px; border: 1px solid var(--line); border-left: 4px solid transparent; border-radius: 8px; padding: 7px; color: var(--ink); font-size: 10px; text-align: left; background: #fff; }
+      .mobile-categories button.active { border-left-color: var(--teal); background: var(--teal-pale); }
+      .notes-backdrop { place-items: end center; padding: 0; }
+      .notes-modal { width: 100%; max-height: 87vh; border-radius: 16px 16px 0 0; }
+      .notes-head { padding: 15px 15px 12px; }
+      .notes-head h2 { font-size: 18px; }
+      .notes-close { width: 34px; height: 34px; }
+      .notes-body { gap: 13px; padding: 13px 13px calc(17px + env(safe-area-inset-bottom)); }
+      .rule-item { grid-template-columns: 25px minmax(0,1fr); gap: 8px; padding: 9px 10px; font-size: 11px; line-height: 1.62; }
+      .rule-no { width: 25px; height: 25px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">BOOK TIP · 职业分类查询</p>
+        <div class="title-row"><h1>职业分类表 · 协会标准速查</h1><button class="rules-btn" id="openNotes" type="button">规则说明</button></div>
+        <p class="subtitle">输入任意文字，查找对应的协会标准代码与小分类；选择结果后查看完整职业等级。</p>
+      </div>
+      <div class="search-wrap">
+        <div class="search">
+          <span class="search-icon" aria-hidden="true">⌕</span>
+          <input id="searchInput" type="search" placeholder="搜索代码、职业名称、大分类或中分类……" autocomplete="off" aria-label="搜索职业分类">
+          <button class="clear-btn" id="clearBtn" type="button" disabled>清空</button>
+        </div>
+        <p class="search-hint">支持任意文字，例如：快递、焊工、1601、沿海</p>
+      </div>
+    </header>
+
+    <section class="mobile-bar" aria-label="手机查询工具栏">
+      <button id="openDrawer" type="button">大分类</button>
+      <span class="mobile-current" id="mobileCurrent"></span>
+      <button class="mobile-result-toggle" id="resultToggle" type="button" hidden>收起职业目录</button>
+    </section>
+
+    <section class="layout">
+      <aside class="category-panel" aria-label="大分类目录">
+        <div class="panel-head"><h2>大分类目录</h2><span>20类</span></div>
+        <ol class="category-list" id="categoryList"></ol>
+      </aside>
+
+      <article class="book">
+        <div class="paper-stack">
+          <div class="paper">
+            <section class="results-panel" aria-label="匹配结果">
+              <div class="results-head">
+                <div><span class="results-kicker" id="resultsKicker">大分类</span><h2 id="resultsTitle"></h2></div>
+                <span class="result-count" id="resultCount"></span>
+              </div>
+              <ol class="result-list" id="resultList"></ol>
+            </section>
+
+            <section class="detail" id="detail" aria-label="职业分类小贴士"></section>
+          </div>
+        </div>
+      </article>
+    </section>
+    <p class="footnote">资料来源：《职业分类表610》 · 最终以保险公司核保结论为准</p>
+  </main>
+
+  <div class="backdrop" id="backdrop"></div>
+  <section class="drawer" id="drawer" aria-label="手机大分类目录" aria-hidden="true">
+    <div class="drawer-head"><h2>大分类目录</h2><button class="drawer-close" id="closeDrawer" type="button" aria-label="关闭">×</button></div>
+    <div class="mobile-categories" id="mobileCategories"></div>
+  </section>
+
+  <div class="notes-backdrop" id="notesBackdrop" role="presentation">
+    <section class="notes-modal" id="notesModal" role="dialog" aria-modal="true" aria-labelledby="notesTitle" aria-hidden="true">
+      <header class="notes-head">
+        <div><span class="notes-eyebrow">阅读职业分类表前请先了解</span><h2 id="notesTitle">等级与作业规则说明</h2></div>
+        <button class="notes-close" id="closeNotes" type="button" aria-label="关闭规则说明">×</button>
+      </header>
+      <div class="notes-body">
+        <section>
+          <h3 class="rule-group-title">保险职业等级</h3>
+          <ol class="rule-list">
+            <li class="rule-item"><span class="rule-no">1</span><span><strong>寿险</strong>职业等级共分为三种：标准费率、拒保、加费50元人民币（即每万元保额加费50元人民币）。</span></li>
+            <li class="rule-item"><span class="rule-no">2</span><span><strong>意外险</strong>职业等级分为七级：1级、2级、3级、4级、5级、6级和拒保。</span></li>
+            <li class="rule-item"><span class="rule-no">3</span><span><strong>住院医疗险</strong>职业等级分为五级：1级、2级、3级、4级和拒保。</span></li>
+          </ol>
+        </section>
+        <section>
+          <h3 class="rule-group-title">地域定义</h3>
+          <ol class="rule-list">
+            <li class="rule-item"><span class="rule-no">4</span><span><strong>内陆与沿海：</strong>内陆指工作地点为没有海岸线的地方且工作内容不与海发生关系；沿海指工作地点为靠海的地带，且工作内容与海有关。</span></li>
+            <li class="rule-item"><span class="rule-no">5</span><span><strong>沿海与近海：</strong>沿海指工作地点为靠海的地带，即使出海当天也可以返回；近海指靠近陆地的海域，通常出海当天无法返回。</span></li>
+          </ol>
+        </section>
+        <section>
+          <h3 class="rule-group-title">高处作业定义</h3>
+          <ol class="rule-list">
+            <li class="rule-item"><span class="rule-no">6</span><span>高处作业是指人在一定位置为基准的高处进行的作业。国家标准GB3608—93《高处作业分级》规定：“凡在坠落高度基准面<strong>2m以上（含2m）</strong>有可能坠落的高处进行作业，都称为高处作业。”在建筑物内作业时，若在2m以上的架子上进行操作，也属于高处作业。</span></li>
+          </ol>
+        </section>
+      </div>
+    </section>
+  </div>
+
+  <script src="career-data.js"></script>
+  <script>
+    const data = Array.isArray(window.CAREER_DATA) ? window.CAREER_DATA : [];
+    const el = id => document.getElementById(id);
+    const book = document.querySelector(".book");
+    const largeGroups = [...new Map(data.map(item => [item.largeCode, item.large])).entries()]
+      .map(([code, name]) => ({ code, name, count: data.filter(item => item.largeCode === code).length }));
+
+    let activeLarge = largeGroups[0]?.code || "";
+    let activeMedium = "";
+    let selectedCode = data[0]?.code || "";
+    let query = "";
+    let filtered = [];
+
+    function normalize(value) {
+      return String(value ?? "").normalize("NFKC").toLowerCase().replace(/\s+/g, "");
+    }
+
+    function displayLife(value) {
+      if (value === "50") return "加费50";
+      if (value === "-") return "拒保";
+      return value || "—";
+    }
+
+    function displayLevel(value) {
+      if (value === "-") return "拒保";
+      return value ? `${value}级` : "—";
+    }
+
+    function searchText(item) {
+      return normalize([
+        item.code, item.small, item.largeCode, item.large, item.mediumCode, item.medium,
+        item.life, item.accident, item.medical, displayLife(item.life), displayLevel(item.accident), displayLevel(item.medical)
+      ].join(" "));
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>"']/g, char => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[char]);
+    }
+
+    function highlight(value) {
+      const safe = escapeHtml(value);
+      if (!query) return safe;
+      const normalizedQuery = normalize(query);
+      if (!normalizedQuery) return safe;
+      const index = normalize(value).indexOf(normalizedQuery);
+      if (index < 0) return safe;
+      const raw = String(value);
+      return `${escapeHtml(raw.slice(0,index))}<mark>${escapeHtml(raw.slice(index,index + query.length))}</mark>${escapeHtml(raw.slice(index + query.length))}`;
+    }
+
+    function buildCategories() {
+      const all = [{ code: "ALL", name: "全部职业", count: data.length }, ...largeGroups];
+      const markup = all.map(item => `<li><button type="button" data-large="${item.code}"><span class="cat-code">${item.code === "ALL" ? "全部" : item.code}</span><span class="cat-name">${escapeHtml(item.name)}</span><span class="cat-count">${item.count}</span></button></li>`).join("");
+      el("categoryList").innerHTML = markup;
+      el("mobileCategories").innerHTML = all.map(item => `<button type="button" data-large="${item.code}"><span class="cat-code">${item.code === "ALL" ? "全部" : item.code}</span><span class="cat-name">${escapeHtml(item.name)}</span><span class="cat-count">${item.count}</span></button>`).join("");
+      document.querySelectorAll("[data-large]").forEach(button => button.addEventListener("click", () => selectLarge(button.dataset.large)));
+    }
+
+    function getLargeRows() {
+      if (activeLarge === "ALL") return data;
+      return data.filter(item => item.largeCode === activeLarge);
+    }
+
+    function getFiltered() {
+      const q = normalize(query);
+      if (q) return data.filter(item => searchText(item).includes(q));
+      const largeRows = getLargeRows();
+      if (activeMedium) return largeRows.filter(item => item.mediumCode === activeMedium);
+      return largeRows;
+    }
+
+    function getMediumGroups() {
+      const rows = getLargeRows();
+      const map = new Map();
+      rows.forEach(item => {
+        if (!map.has(item.mediumCode)) map.set(item.mediumCode, { code: item.mediumCode, name: item.medium, count: 0 });
+        map.get(item.mediumCode).count += 1;
+      });
+      return [...map.values()];
+    }
+
+    function directoryLabel(collapsed) {
+      if (query) return collapsed ? "查看搜索结果" : "收起搜索结果";
+      if (activeMedium) return collapsed ? "查看职业目录" : "收起职业目录";
+      return collapsed ? "查看中分类目录" : "收起中分类目录";
+    }
+
+    function updateCategoryState() {
+      document.querySelectorAll("[data-large]").forEach(button => button.classList.toggle("active", button.dataset.large === activeLarge && !query));
+    }
+
+    function renderResults() {
+      filtered = getFiltered();
+      if (!filtered.some(item => item.code === selectedCode)) selectedCode = filtered[0]?.code || "";
+
+      const group = largeGroups.find(item => item.code === activeLarge);
+      const mediumMode = !query && !activeMedium;
+      const mediumGroups = mediumMode ? getMediumGroups() : [];
+      el("resultsKicker").textContent = query ? "搜索结果" : activeMedium ? `${activeMedium} 中分类` : activeLarge === "ALL" ? "中分类目录" : `${activeLarge} 大分类`;
+      el("resultsTitle").textContent = query ? `“${query}”` : activeMedium ? (filtered[0]?.medium || "职业目录") : activeLarge === "ALL" ? "全部中分类" : group?.name || "中分类目录";
+      el("resultCount").textContent = mediumMode ? `${mediumGroups.length}类` : `${filtered.length}项`;
+      el("mobileCurrent").textContent = query ? `${filtered.length}项匹配` : activeMedium ? `${activeMedium} · ${filtered.length}项` : `${activeLarge === "ALL" ? "全部" : activeLarge} · ${mediumGroups.length}个中分类`;
+      el("resultToggle").hidden = !window.matchMedia("(max-width: 760px)").matches;
+      el("resultToggle").textContent = directoryLabel(book.classList.contains("results-collapsed"));
+
+      if (mediumMode && mediumGroups.length) {
+        el("resultList").innerHTML = mediumGroups.map(item => `<li><button type="button" data-medium="${item.code}"><span class="result-meta"><span class="result-code">${item.code}</span><span class="medium-count">${item.count}项</span></span><span class="result-name">${escapeHtml(item.name)}</span></button></li>`).join("");
+        document.querySelectorAll("[data-medium]").forEach(button => button.addEventListener("click", () => selectMedium(button.dataset.medium)));
+      } else if (!filtered.length) {
+        el("resultList").innerHTML = `<li class="empty">没有找到匹配职业。<br>请缩短关键词或更换文字。</li>`;
+      } else {
+        const back = activeMedium && !query ? `<li class="directory-back"><button id="backMedium" type="button">‹ 返回中分类目录</button></li>` : "";
+        el("resultList").innerHTML = back + filtered.map(item => `<li><button type="button" data-code="${item.code}" class="${item.code === selectedCode ? "active" : ""}"><span class="result-meta"><span class="result-code">${highlight(item.code)}</span>${query ? `<span class="result-large">${item.largeCode} · ${escapeHtml(item.large)}</span>` : ""}</span><span class="result-name">${highlight(item.small)}</span></button></li>`).join("");
+        if (activeMedium && !query) el("backMedium").addEventListener("click", backToMediums);
+        document.querySelectorAll("[data-code]").forEach(button => button.addEventListener("click", () => selectCareer(button.dataset.code)));
+      }
+      updateCategoryState();
+      renderDetail();
+    }
+
+    function ratingCard(label, value, raw) {
+      const reject = raw === "-";
+      return `<div class="rating ${reject ? "reject" : ""}"><span>${label}</span><strong>${escapeHtml(value)}</strong></div>`;
+    }
+
+    function renderDetail() {
+      const item = data.find(row => row.code === selectedCode);
+      if (!item) {
+        el("detail").innerHTML = `<div class="detail-empty"><div><strong>暂无匹配结果</strong><span>请更换搜索文字或选择其他大分类。</span></div></div>`;
+        return;
+      }
+      const resultIndex = filtered.findIndex(row => row.code === selectedCode);
+      const hasPrev = resultIndex > 0;
+      const hasNext = resultIndex >= 0 && resultIndex < filtered.length - 1;
+      el("detail").innerHTML = `
+        <div class="detail-top">
+          <div><span class="tip-label">职业分类小贴士</span><h2>${escapeHtml(item.small)}</h2></div>
+          <span class="source-page">原表第 ${item.page} 页</span>
+        </div>
+        <div class="identity-grid">
+          <div class="field"><span class="field-label">大分类</span><span class="field-value">${item.largeCode} · ${escapeHtml(item.large)}</span></div>
+          <div class="field"><span class="field-label">中分类</span><span class="field-value">${item.mediumCode} · ${escapeHtml(item.medium)}</span></div>
+          <div class="field code-field"><span class="field-label">协会标准代码</span><span class="field-value">${item.code}</span></div>
+          <div class="field"><span class="field-label">小分类</span><span class="field-value">${escapeHtml(item.small)}</span></div>
+        </div>
+        <p class="ratings-title">保险职业等级</p>
+        <div class="ratings">
+          ${ratingCard("寿险", displayLife(item.life), item.life)}
+          ${ratingCard("意外险", displayLevel(item.accident), item.accident)}
+          ${ratingCard("住院医疗险", displayLevel(item.medical), item.medical)}
+        </div>
+        <div class="notice">“加费50”指寿险每万元保额加费50元；“拒保”表示原表对应项目为“－”。具体承保以核保结论为准。</div>
+        <div class="detail-nav"><button class="page-step prev-page" id="prevCareer" type="button" ${hasPrev ? "" : "disabled"}>‹ 上一页</button><span class="detail-position">${resultIndex + 1} / ${filtered.length}</span><button class="page-step next-page" id="nextCareer" type="button" ${hasNext ? "" : "disabled"}>下一页 ›</button></div>`;
+      if (hasPrev) el("prevCareer").addEventListener("click", () => selectCareer(filtered[resultIndex - 1].code));
+      if (hasNext) el("nextCareer").addEventListener("click", () => selectCareer(filtered[resultIndex + 1].code));
+      const detail = el("detail");
+      detail.classList.remove("animate");
+      void detail.offsetWidth;
+      detail.classList.add("animate");
+    }
+
+    function selectLarge(code) {
+      activeLarge = code;
+      activeMedium = "";
+      query = "";
+      el("searchInput").value = "";
+      el("clearBtn").disabled = true;
+      setDefaultResultState();
+      closeDrawer();
+      renderResults();
+    }
+
+    function selectMedium(code) {
+      activeMedium = code;
+      const first = data.find(item => item.mediumCode === code && (activeLarge === "ALL" || item.largeCode === activeLarge));
+      if (first) selectedCode = first.code;
+      book.classList.remove("results-collapsed");
+      el("resultToggle").textContent = "收起职业目录";
+      renderResults();
+    }
+
+    function backToMediums() {
+      activeMedium = "";
+      renderResults();
+    }
+
+    function selectCareer(code) {
+      selectedCode = code;
+      document.querySelectorAll("[data-code]").forEach(button => button.classList.toggle("active", button.dataset.code === code));
+      renderDetail();
+      if (window.matchMedia("(max-width: 760px)").matches) {
+        book.classList.add("results-collapsed");
+        el("resultToggle").hidden = false;
+        el("resultToggle").textContent = directoryLabel(true);
+        book.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+
+    function handleSearch() {
+      query = el("searchInput").value.trim();
+      el("clearBtn").disabled = !query;
+      if (query) { activeLarge = "ALL"; activeMedium = ""; }
+      const mobile = window.matchMedia("(max-width: 760px)").matches;
+      book.classList.toggle("results-collapsed", mobile && !query);
+      el("resultToggle").hidden = !mobile;
+      el("resultToggle").textContent = directoryLabel(mobile && !query);
+      renderResults();
+    }
+
+    function setDefaultResultState() {
+      const mobile = window.matchMedia("(max-width: 760px)").matches;
+      book.classList.toggle("results-collapsed", mobile);
+      el("resultToggle").hidden = !mobile;
+      el("resultToggle").textContent = directoryLabel(mobile);
+    }
+
+    function openDrawer() { el("drawer").classList.add("open"); el("backdrop").classList.add("open"); el("drawer").setAttribute("aria-hidden", "false"); }
+    function closeDrawer() { el("drawer").classList.remove("open"); el("backdrop").classList.remove("open"); el("drawer").setAttribute("aria-hidden", "true"); }
+    function openNotes() { el("notesBackdrop").classList.add("open"); el("notesModal").setAttribute("aria-hidden", "false"); document.body.style.overflow = "hidden"; el("closeNotes").focus(); }
+    function closeNotes() { el("notesBackdrop").classList.remove("open"); el("notesModal").setAttribute("aria-hidden", "true"); document.body.style.overflow = ""; el("openNotes").focus(); }
+
+    el("searchInput").addEventListener("input", handleSearch);
+    el("clearBtn").addEventListener("click", () => { el("searchInput").value = ""; query = ""; activeLarge = "01"; activeMedium = ""; el("clearBtn").disabled = true; setDefaultResultState(); renderResults(); el("searchInput").focus(); });
+    el("openDrawer").addEventListener("click", openDrawer);
+    el("closeDrawer").addEventListener("click", closeDrawer);
+    el("backdrop").addEventListener("click", closeDrawer);
+    el("openNotes").addEventListener("click", openNotes);
+    el("closeNotes").addEventListener("click", closeNotes);
+    el("notesBackdrop").addEventListener("click", event => { if (event.target === el("notesBackdrop")) closeNotes(); });
+    el("resultToggle").addEventListener("click", () => {
+      const collapsed = book.classList.toggle("results-collapsed");
+      el("resultToggle").textContent = directoryLabel(collapsed);
+    });
+    document.addEventListener("keydown", event => { if (event.key === "Escape") { if (el("notesBackdrop").classList.contains("open")) closeNotes(); else closeDrawer(); } });
+
+    buildCategories();
+    setDefaultResultState();
+    renderResults();
+  </script>
+</body>
+</html>
