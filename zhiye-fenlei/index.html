@@ -405,7 +405,7 @@
       <div class="search-wrap">
         <div class="search">
           <span class="search-icon" aria-hidden="true">⌕</span>
-          <input id="searchInput" type="search" placeholder="搜索代码、职业名称、大分类或中分类……" autocomplete="off" aria-label="搜索职业分类">
+          <input id="searchInput" type="search" placeholder="搜索代码、职业名称或大分类……" autocomplete="off" aria-label="搜索职业分类">
           <button class="clear-btn" id="clearBtn" type="button" disabled>清空</button>
         </div>
         <p class="search-hint">支持任意文字，例如：快递、焊工、1601、沿海</p>
@@ -564,8 +564,7 @@
 
     function directoryLabel(collapsed) {
       if (query) return collapsed ? "查看搜索结果" : "收起搜索结果";
-      if (activeMedium) return collapsed ? "查看职业列表" : "收起职业列表";
-      return collapsed ? "查看中分类" : "收起中分类";
+      return collapsed ? "查看职业列表" : "收起职业列表";
     }
 
     function updateCategoryState() {
@@ -577,30 +576,23 @@
       if (!filtered.some(item => item.code === selectedCode)) selectedCode = "";
 
       const group = largeGroups.find(item => item.code === activeLarge);
-      const mediumMode = !query && !activeMedium;
-      const mediumGroups = mediumMode ? getMediumGroups() : [];
       const showResults = Boolean(query) || activeLarge !== "ALL";
       navStack.classList.toggle("show-results", showResults);
       el("backLarge").hidden = Boolean(query) || activeLarge === "ALL";
-      el("resultsKicker").textContent = query ? "搜索结果" : activeMedium ? "职业列表" : "中分类目录";
-      el("resultsTitle").textContent = query ? `“${query}”` : activeMedium ? (filtered[0]?.medium || "职业列表") : group?.name || "中分类目录";
-      el("resultCount").textContent = mediumMode ? `${mediumGroups.length}类` : `${filtered.length}项`;
-      el("mobileCurrent").textContent = query ? `${filtered.length}项匹配` : activeMedium ? `${activeMedium} · ${filtered.length}项` : activeLarge === "ALL" ? "请选择大分类" : `${activeLarge} · ${mediumGroups.length}个中分类`;
+      el("resultsKicker").textContent = query ? "搜索结果" : "职业列表";
+      el("resultsTitle").textContent = query ? `“${query}”` : group?.name || "职业列表";
+      el("resultCount").textContent = `${filtered.length}项`;
+      el("mobileCurrent").textContent = query ? `${filtered.length}项匹配` : activeLarge === "ALL" ? "请选择大分类" : `${activeLarge} · ${filtered.length}项`;
       const mobile = window.matchMedia("(max-width: 760px)").matches;
       el("resultToggle").hidden = !mobile || !showResults;
       el("resultToggle").textContent = directoryLabel(book.classList.contains("results-collapsed"));
 
-      if (mediumMode && mediumGroups.length) {
-        el("resultList").innerHTML = mediumGroups.map(item => `<li><button type="button" data-medium="${item.code}"><span class="result-meta"><span class="result-code">${item.code}</span><span class="medium-count">${item.count}项</span></span><span class="result-name">${escapeHtml(item.name)}</span></button></li>`).join("");
-        document.querySelectorAll("[data-medium]").forEach(button => button.addEventListener("click", () => selectMedium(button.dataset.medium)));
-      } else if (!filtered.length) {
+      if (!filtered.length) {
         el("resultList").innerHTML = `<li class="empty">没有找到匹配职业。<br>请缩短关键词或更换文字。</li>`;
       } else {
-        const back = activeMedium && !query ? `<li class="directory-back"><button id="backMedium" type="button">‹ 返回中分类目录</button></li>` : "";
         const visibleRows = filtered.slice(0, 120);
         const more = filtered.length > visibleRows.length ? `<li class="result-more">还有 ${filtered.length - visibleRows.length} 项未展示，请补充更具体的关键词。</li>` : "";
-        el("resultList").innerHTML = back + visibleRows.map(item => `<li><article class="career-result"><div class="result-main"><span class="result-code">${highlight(item.code)}</span><strong class="result-name">${highlight(item.small)}</strong></div><span class="result-path">${item.largeCode} · ${escapeHtml(item.large)}　›　${item.mediumCode} · ${escapeHtml(item.medium)}</span><div class="quick-ratings">${quickRating("寿险", displayLife(item.life), item.life)}${quickRating("意外险", displayLevel(item.accident), item.accident)}${quickRating("住院医疗险", displayLevel(item.medical), item.medical)}</div></article></li>`).join("") + more;
-        if (activeMedium && !query) el("backMedium").addEventListener("click", backToMediums);
+        el("resultList").innerHTML = visibleRows.map(item => `<li><article class="career-result"><div class="result-main"><span class="result-code">${highlight(item.code)}</span><strong class="result-name">${highlight(item.small)}</strong></div><span class="result-path">${item.largeCode} · ${escapeHtml(item.large)}</span><div class="quick-ratings">${quickRating("寿险", displayLife(item.life), item.life)}${quickRating("意外险", displayLevel(item.accident), item.accident)}${quickRating("住院医疗险", displayLevel(item.medical), item.medical)}</div></article></li>`).join("") + more;
       }
       updateCategoryState();
     }
