@@ -138,6 +138,61 @@
     .rule-item strong { color: var(--navy); }
     .footnote { width: fit-content; margin: 13px auto 0; padding: 6px 12px; border: 1px solid rgba(23,54,77,.1); border-radius: 999px; color: rgba(32,51,66,.66); font-size: 11px; font-weight: 800; background: rgba(255,255,255,.53); }
 
+    /* Simplified query-tool layout: one navigation column and one detail column. */
+    body { background: #f2f5f4; }
+    .app { width: min(1180px, calc(100vw - 32px)); padding-top: 24px; }
+    .topbar { align-items: center; margin-bottom: 18px; }
+    .eyebrow { letter-spacing: .09em; }
+    .title-row { margin-bottom: 4px; }
+    h1 { font-size: clamp(25px, 3vw, 36px); }
+    .search { border-color: var(--line); background: #fff; box-shadow: 0 10px 28px rgba(23,54,77,.08); backdrop-filter: none; }
+    .layout { display: block; }
+    .book {
+      display: grid;
+      grid-template-columns: minmax(270px, 310px) minmax(0, 1fr);
+      height: calc(100vh - 150px);
+      min-height: 590px;
+      padding: 0;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fffdf9;
+      box-shadow: 0 18px 48px rgba(23,54,77,.11);
+      overflow: hidden;
+    }
+    .book::before { display: none; }
+    .nav-stack { min-width: 0; height: 100%; border-right: 1px solid var(--line); background: #f8faf9; }
+    .category-panel {
+      height: 100%;
+      min-height: 0;
+      padding: 21px 16px 16px;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      backdrop-filter: none;
+    }
+    .nav-stack.show-results .category-panel { display: none; }
+    .nav-stack:not(.show-results) .results-panel { display: none; }
+    .results-panel { height: 100%; padding: 18px 14px 15px; border: 0; background: transparent; }
+    .nav-back { width: fit-content; margin: 0 0 13px; border: 0; padding: 0; color: var(--teal); font-size: 12px; font-weight: 900; background: transparent; cursor: pointer; }
+    .result-list button { border-left-width: 1px; padding: 10px 11px; background: #fff; }
+    .result-list button.active { border-left-width: 4px; }
+    .result-main { display: flex; gap: 9px; align-items: baseline; }
+    .result-main .result-name { min-width: 0; }
+    .result-path { display: block; margin-top: 5px; overflow: hidden; color: var(--muted); font-size: 10px; line-height: 1.4; text-overflow: ellipsis; white-space: nowrap; }
+    .detail { padding: clamp(34px, 5vw, 62px) clamp(28px, 5vw, 68px) 28px; background: #fffdf9; }
+    .detail-top { margin-bottom: 20px; }
+    .detail-breadcrumb { display: block; margin-bottom: 9px; color: var(--muted); font-size: 11px; font-weight: 800; }
+    .detail h2 { font-size: clamp(26px, 3.2vw, 38px); }
+    .code-line { display: flex; gap: 10px; align-items: center; width: fit-content; margin-top: 13px; padding: 7px 11px; border-radius: 9px; color: var(--muted); font-size: 10px; font-weight: 850; background: rgba(22,132,127,.08); }
+    .code-line strong { color: var(--teal); font-size: 17px; letter-spacing: .06em; }
+    .ratings-title { margin-top: 28px; }
+    .rating { padding: 16px 10px; background: #fff; }
+    .notice { max-width: 760px; }
+    .detail-empty { min-height: 420px; }
+    .detail-empty .empty-icon { display: grid; place-items: center; width: 54px; height: 54px; margin: 0 auto 14px; border-radius: 16px; color: var(--teal); font-size: 25px; background: var(--teal-pale); }
+    .detail-empty span { display: block; max-width: 360px; line-height: 1.7; }
+
     @media (max-width: 1040px) {
       .paper { grid-template-columns: minmax(230px, 285px) minmax(0,1fr); }
       .detail { padding-right: 25px; padding-left: 25px; }
@@ -218,6 +273,20 @@
       .notes-body { gap: 13px; padding: 13px 13px calc(17px + env(safe-area-inset-bottom)); }
       .rule-item { grid-template-columns: 25px minmax(0,1fr); gap: 8px; padding: 9px 10px; font-size: 11px; line-height: 1.62; }
       .rule-no { width: 25px; height: 25px; }
+
+      .app { width: min(100vw - 14px, 760px); }
+      .book { display: block; height: auto; min-height: 520px; padding: 0; border-radius: 12px; background: #fffdf9; box-shadow: 0 12px 30px rgba(23,54,77,.1); overflow: hidden; }
+      .nav-stack { height: auto; border-right: 0; }
+      .nav-stack:not(.show-results) { display: none; }
+      .results-panel { height: min(42vh, 340px); padding: 16px 12px 12px; border-bottom: 1px solid var(--line); }
+      .nav-back { margin-bottom: 9px; }
+      .detail { min-height: 520px; padding: 28px 18px 22px; }
+      .detail-breadcrumb { margin-bottom: 7px; font-size: 10px; }
+      .code-line { margin-top: 10px; }
+      .ratings-title { margin-top: 22px; }
+      .result-path { font-size: 9px; }
+      .drawer { max-height: 90vh; }
+      .mobile-categories { max-height: 75vh; }
     }
   </style>
 </head>
@@ -225,8 +294,8 @@
   <main class="app">
     <header class="topbar">
       <div>
-        <p class="eyebrow">BOOK TIP · 职业分类查询</p>
-        <div class="title-row"><h1>职业分类表 · 协会标准速查</h1><button class="rules-btn" id="openNotes" type="button">规则说明</button></div>
+        <p class="eyebrow">职业分类查询</p>
+        <div class="title-row"><h1>职业分类表 · 协会标准速查</h1><button class="rules-btn" id="openNotes" type="button">等级说明</button></div>
         <p class="subtitle">输入任意文字，查找对应的协会标准代码与小分类；选择结果后查看完整职业等级。</p>
       </div>
       <div class="search-wrap">
@@ -240,31 +309,30 @@
     </header>
 
     <section class="mobile-bar" aria-label="手机查询工具栏">
-      <button id="openDrawer" type="button">大分类</button>
+      <button id="openDrawer" type="button">分类目录</button>
       <span class="mobile-current" id="mobileCurrent"></span>
       <button class="mobile-result-toggle" id="resultToggle" type="button" hidden>收起职业目录</button>
     </section>
 
     <section class="layout">
-      <aside class="category-panel" aria-label="大分类目录">
-        <div class="panel-head"><h2>大分类目录</h2><span>20类</span></div>
-        <ol class="category-list" id="categoryList"></ol>
-      </aside>
-
       <article class="book">
-        <div class="paper-stack">
-          <div class="paper">
-            <section class="results-panel" aria-label="匹配结果">
-              <div class="results-head">
-                <div><span class="results-kicker" id="resultsKicker">大分类</span><h2 id="resultsTitle"></h2></div>
-                <span class="result-count" id="resultCount"></span>
-              </div>
-              <ol class="result-list" id="resultList"></ol>
-            </section>
+        <div class="nav-stack" id="navStack">
+          <aside class="category-panel" aria-label="大分类目录">
+            <div class="panel-head"><h2>选择大分类</h2><span>20类</span></div>
+            <ol class="category-list" id="categoryList"></ol>
+          </aside>
 
-            <section class="detail" id="detail" aria-label="职业分类小贴士"></section>
-          </div>
+          <section class="results-panel" aria-label="匹配结果">
+            <button class="nav-back" id="backLarge" type="button">‹ 返回大分类</button>
+            <div class="results-head">
+              <div><span class="results-kicker" id="resultsKicker">分类目录</span><h2 id="resultsTitle"></h2></div>
+              <span class="result-count" id="resultCount"></span>
+            </div>
+            <ol class="result-list" id="resultList"></ol>
+          </section>
         </div>
+
+        <section class="detail" id="detail" aria-label="职业分类小贴士"></section>
       </article>
     </section>
     <p class="footnote">资料来源：《职业分类表610》 · 最终以保险公司核保结论为准</p>
@@ -272,7 +340,7 @@
 
   <div class="backdrop" id="backdrop"></div>
   <section class="drawer" id="drawer" aria-label="手机大分类目录" aria-hidden="true">
-    <div class="drawer-head"><h2>大分类目录</h2><button class="drawer-close" id="closeDrawer" type="button" aria-label="关闭">×</button></div>
+    <div class="drawer-head"><h2>选择大分类</h2><button class="drawer-close" id="closeDrawer" type="button" aria-label="关闭">×</button></div>
     <div class="mobile-categories" id="mobileCategories"></div>
   </section>
 
@@ -313,12 +381,13 @@
     const data = Array.isArray(window.CAREER_DATA) ? window.CAREER_DATA : [];
     const el = id => document.getElementById(id);
     const book = document.querySelector(".book");
+    const navStack = el("navStack");
     const largeGroups = [...new Map(data.map(item => [item.largeCode, item.large])).entries()]
       .map(([code, name]) => ({ code, name, count: data.filter(item => item.largeCode === code).length }));
 
-    let activeLarge = largeGroups[0]?.code || "";
+    let activeLarge = "ALL";
     let activeMedium = "";
-    let selectedCode = data[0]?.code || "";
+    let selectedCode = "";
     let query = "";
     let filtered = [];
 
@@ -360,10 +429,9 @@
     }
 
     function buildCategories() {
-      const all = [{ code: "ALL", name: "全部职业", count: data.length }, ...largeGroups];
-      const markup = all.map(item => `<li><button type="button" data-large="${item.code}"><span class="cat-code">${item.code === "ALL" ? "全部" : item.code}</span><span class="cat-name">${escapeHtml(item.name)}</span><span class="cat-count">${item.count}</span></button></li>`).join("");
+      const markup = largeGroups.map(item => `<li><button type="button" data-large="${item.code}"><span class="cat-code">${item.code}</span><span class="cat-name">${escapeHtml(item.name)}</span><span class="cat-count">${item.count}</span></button></li>`).join("");
       el("categoryList").innerHTML = markup;
-      el("mobileCategories").innerHTML = all.map(item => `<button type="button" data-large="${item.code}"><span class="cat-code">${item.code === "ALL" ? "全部" : item.code}</span><span class="cat-name">${escapeHtml(item.name)}</span><span class="cat-count">${item.count}</span></button>`).join("");
+      el("mobileCategories").innerHTML = largeGroups.map(item => `<button type="button" data-large="${item.code}"><span class="cat-code">${item.code}</span><span class="cat-name">${escapeHtml(item.name)}</span><span class="cat-count">${item.count}</span></button>`).join("");
       document.querySelectorAll("[data-large]").forEach(button => button.addEventListener("click", () => selectLarge(button.dataset.large)));
     }
 
@@ -392,8 +460,8 @@
 
     function directoryLabel(collapsed) {
       if (query) return collapsed ? "查看搜索结果" : "收起搜索结果";
-      if (activeMedium) return collapsed ? "查看职业目录" : "收起职业目录";
-      return collapsed ? "查看中分类目录" : "收起中分类目录";
+      if (activeMedium) return collapsed ? "查看职业列表" : "收起职业列表";
+      return collapsed ? "查看中分类" : "收起中分类";
     }
 
     function updateCategoryState() {
@@ -402,16 +470,20 @@
 
     function renderResults() {
       filtered = getFiltered();
-      if (!filtered.some(item => item.code === selectedCode)) selectedCode = filtered[0]?.code || "";
+      if (!filtered.some(item => item.code === selectedCode)) selectedCode = "";
 
       const group = largeGroups.find(item => item.code === activeLarge);
       const mediumMode = !query && !activeMedium;
       const mediumGroups = mediumMode ? getMediumGroups() : [];
-      el("resultsKicker").textContent = query ? "搜索结果" : activeMedium ? `${activeMedium} 中分类` : activeLarge === "ALL" ? "中分类目录" : `${activeLarge} 大分类`;
-      el("resultsTitle").textContent = query ? `“${query}”` : activeMedium ? (filtered[0]?.medium || "职业目录") : activeLarge === "ALL" ? "全部中分类" : group?.name || "中分类目录";
+      const showResults = Boolean(query) || activeLarge !== "ALL";
+      navStack.classList.toggle("show-results", showResults);
+      el("backLarge").hidden = Boolean(query) || activeLarge === "ALL";
+      el("resultsKicker").textContent = query ? "搜索结果" : activeMedium ? "职业列表" : "中分类目录";
+      el("resultsTitle").textContent = query ? `“${query}”` : activeMedium ? (filtered[0]?.medium || "职业列表") : group?.name || "中分类目录";
       el("resultCount").textContent = mediumMode ? `${mediumGroups.length}类` : `${filtered.length}项`;
-      el("mobileCurrent").textContent = query ? `${filtered.length}项匹配` : activeMedium ? `${activeMedium} · ${filtered.length}项` : `${activeLarge === "ALL" ? "全部" : activeLarge} · ${mediumGroups.length}个中分类`;
-      el("resultToggle").hidden = !window.matchMedia("(max-width: 760px)").matches;
+      el("mobileCurrent").textContent = query ? `${filtered.length}项匹配` : activeMedium ? `${activeMedium} · ${filtered.length}项` : activeLarge === "ALL" ? "请选择大分类" : `${activeLarge} · ${mediumGroups.length}个中分类`;
+      const mobile = window.matchMedia("(max-width: 760px)").matches;
+      el("resultToggle").hidden = !mobile || !showResults;
       el("resultToggle").textContent = directoryLabel(book.classList.contains("results-collapsed"));
 
       if (mediumMode && mediumGroups.length) {
@@ -421,7 +493,7 @@
         el("resultList").innerHTML = `<li class="empty">没有找到匹配职业。<br>请缩短关键词或更换文字。</li>`;
       } else {
         const back = activeMedium && !query ? `<li class="directory-back"><button id="backMedium" type="button">‹ 返回中分类目录</button></li>` : "";
-        el("resultList").innerHTML = back + filtered.map(item => `<li><button type="button" data-code="${item.code}" class="${item.code === selectedCode ? "active" : ""}"><span class="result-meta"><span class="result-code">${highlight(item.code)}</span>${query ? `<span class="result-large">${item.largeCode} · ${escapeHtml(item.large)}</span>` : ""}</span><span class="result-name">${highlight(item.small)}</span></button></li>`).join("");
+        el("resultList").innerHTML = back + filtered.map(item => `<li><button type="button" data-code="${item.code}" class="${item.code === selectedCode ? "active" : ""}"><span class="result-main"><span class="result-code">${highlight(item.code)}</span><span class="result-name">${highlight(item.small)}</span></span><span class="result-path">${item.largeCode} · ${escapeHtml(item.large)}　›　${item.mediumCode} · ${escapeHtml(item.medium)}</span></button></li>`).join("");
         if (activeMedium && !query) el("backMedium").addEventListener("click", backToMediums);
         document.querySelectorAll("[data-code]").forEach(button => button.addEventListener("click", () => selectCareer(button.dataset.code)));
       }
@@ -437,7 +509,8 @@
     function renderDetail() {
       const item = data.find(row => row.code === selectedCode);
       if (!item) {
-        el("detail").innerHTML = `<div class="detail-empty"><div><strong>暂无匹配结果</strong><span>请更换搜索文字或选择其他大分类。</span></div></div>`;
+        const hasNoResults = (query || activeMedium) && !filtered.length;
+        el("detail").innerHTML = `<div class="detail-empty"><div><span class="empty-icon">⌕</span><strong>${hasNoResults ? "没有找到匹配职业" : "先搜索或选择一个职业"}</strong><span>${hasNoResults ? "请缩短关键词或更换搜索文字。" : "可直接输入任意文字，也可以从分类目录逐级查找。"}</span></div></div>`;
         return;
       }
       const resultIndex = filtered.findIndex(row => row.code === selectedCode);
@@ -445,14 +518,8 @@
       const hasNext = resultIndex >= 0 && resultIndex < filtered.length - 1;
       el("detail").innerHTML = `
         <div class="detail-top">
-          <div><span class="tip-label">职业分类小贴士</span><h2>${escapeHtml(item.small)}</h2></div>
+          <div><span class="detail-breadcrumb">${item.largeCode} · ${escapeHtml(item.large)}　›　${item.mediumCode} · ${escapeHtml(item.medium)}</span><h2>${escapeHtml(item.small)}</h2><div class="code-line"><span>协会标准代码</span><strong>${item.code}</strong></div></div>
           <span class="source-page">原表第 ${item.page} 页</span>
-        </div>
-        <div class="identity-grid">
-          <div class="field"><span class="field-label">大分类</span><span class="field-value">${item.largeCode} · ${escapeHtml(item.large)}</span></div>
-          <div class="field"><span class="field-label">中分类</span><span class="field-value">${item.mediumCode} · ${escapeHtml(item.medium)}</span></div>
-          <div class="field code-field"><span class="field-label">协会标准代码</span><span class="field-value">${item.code}</span></div>
-          <div class="field"><span class="field-label">小分类</span><span class="field-value">${escapeHtml(item.small)}</span></div>
         </div>
         <p class="ratings-title">保险职业等级</p>
         <div class="ratings">
@@ -473,26 +540,36 @@
     function selectLarge(code) {
       activeLarge = code;
       activeMedium = "";
+      selectedCode = "";
       query = "";
       el("searchInput").value = "";
       el("clearBtn").disabled = true;
-      setDefaultResultState();
       closeDrawer();
+      book.classList.remove("results-collapsed");
       renderResults();
     }
 
     function selectMedium(code) {
       activeMedium = code;
-      const first = data.find(item => item.mediumCode === code && (activeLarge === "ALL" || item.largeCode === activeLarge));
-      if (first) selectedCode = first.code;
+      selectedCode = "";
       book.classList.remove("results-collapsed");
-      el("resultToggle").textContent = "收起职业目录";
+      el("resultToggle").textContent = "收起职业列表";
       renderResults();
     }
 
     function backToMediums() {
       activeMedium = "";
+      selectedCode = "";
       renderResults();
+    }
+
+    function backToLarges() {
+      activeLarge = "ALL";
+      activeMedium = "";
+      selectedCode = "";
+      book.classList.add("results-collapsed");
+      renderResults();
+      if (window.matchMedia("(max-width: 760px)").matches) openDrawer();
     }
 
     function selectCareer(code) {
@@ -531,7 +608,8 @@
     function closeNotes() { el("notesBackdrop").classList.remove("open"); el("notesModal").setAttribute("aria-hidden", "true"); document.body.style.overflow = ""; el("openNotes").focus(); }
 
     el("searchInput").addEventListener("input", handleSearch);
-    el("clearBtn").addEventListener("click", () => { el("searchInput").value = ""; query = ""; activeLarge = "01"; activeMedium = ""; el("clearBtn").disabled = true; setDefaultResultState(); renderResults(); el("searchInput").focus(); });
+    el("clearBtn").addEventListener("click", () => { el("searchInput").value = ""; query = ""; activeLarge = "ALL"; activeMedium = ""; selectedCode = ""; el("clearBtn").disabled = true; setDefaultResultState(); renderResults(); el("searchInput").focus(); });
+    el("backLarge").addEventListener("click", backToLarges);
     el("openDrawer").addEventListener("click", openDrawer);
     el("closeDrawer").addEventListener("click", closeDrawer);
     el("backdrop").addEventListener("click", closeDrawer);
